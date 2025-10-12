@@ -20,7 +20,7 @@ function RouteComponent() {
   return <div className='p-4 flex flex-col gap-4'>
     <SearchBar />
     {vacancies
-        ? <div className='flex flex-col gap-2 max-w-144 mx-auto'>
+        ? <div className='flex flex-col gap-2 max-w-192 mx-auto'>
           {vacancies.map(v => <VacancyCard vacancy={v} />)}
         </div>
         : <Loading />}

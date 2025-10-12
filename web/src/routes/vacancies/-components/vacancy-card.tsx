@@ -19,8 +19,8 @@ export default function VacancyCard({ vacancy } : {
         </div>
     </div>;
 
-    return <div className={'w-full rounded-4xl shadow flex flex-col gap-0' + (vacancy.imageUrl ? 'h-96' : 'h-36')}>
-        {vacancy.imageUrl && <div className='h-50 overflow-hidden'>
+    return <div className='w-full rounded-4xl shadow flex flex-col gap-0'>
+        {vacancy.imageUrl && <div className='grow max-h-50 overflow-hidden'>
             <img className='size-full rounded-t-4xl' src={vacancy.imageUrl} alt={vacancy.name} />
         </div>}
         {content}
