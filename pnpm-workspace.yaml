@@ -1,0 +1,6 @@
+injectWorkspacePackages: true
+packages:
+  - web
+  - shared
+syncInjectedDepsAfterScripts:
+  - build
