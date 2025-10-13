@@ -1,5 +1,7 @@
+using System.Reflection;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
+using Vogen;
 
 namespace Koworking.Api.Infrastructure.OpenApi;
 
@@ -21,11 +23,11 @@ public class SchemaNamingTransformer : IOpenApiSchemaTransformer
             return null;
         }
 
-        // var valueObject = type.GetCustomAttribute<ValueObjectAttribute>() is not null;
-        // if (valueObject)
-        // {
-        //     return null;
-        // }
+        var valueObject = type.GetCustomAttribute<ValueObjectAttribute>() is not null;
+        if (valueObject)
+        {
+            return null;
+        }
         
         var collectionType = type.IsGenericType && type
             .GetInterfaces()

@@ -5,6 +5,7 @@ import SearchBar from "@/routes/vacancies/-components/search-bar.tsx";
 import Loading from "@/components/loading.tsx";
 import VacancyCard from "@/routes/vacancies/-components/vacancy-card.tsx";
 import {client} from "@/utils/backend.ts";
+import {useDeferredValue, useState} from "react";
 
 export const Route = createFileRoute('/vacancies/')({
   component: RouteComponent,
@@ -12,17 +13,18 @@ export const Route = createFileRoute('/vacancies/')({
 
 function RouteComponent() {
 
-  const { data: vacancies } = useQuery({
-    ...getVacanciesOptions({ client }),
+  const [search, setSearch] = useState('');
+  const { data: vacancies, isPending } = useQuery({
+    ...getVacanciesOptions({ client, query: { Search: search } }),
     select: res => res.data
   });
+  const stale = useDeferredValue(vacancies);
 
   return <div className='p-4 flex flex-col gap-4'>
-    <SearchBar />
-    {vacancies
-        ? <div className='flex flex-col gap-2 max-w-192 mx-auto'>
-          {vacancies.map(v => <VacancyCard vacancy={v} />)}
-        </div>
-        : <Loading />}
+    <SearchBar onSearch={setSearch} />
+    {isPending && <Loading />}
+    <div className='flex flex-col gap-2 max-w-192 mx-auto'>
+      {(vacancies ?? stale)?.map(v => <VacancyCard key={v.id} vacancy={v} />)}
+    </div>
   </div>
 }

@@ -3,15 +3,40 @@
 import { z } from 'zod';
 
 /**
+ * PaycheckPeriod
+ */
+export const zPaycheckPeriod = z.enum([
+    'Hourly',
+    'Daily',
+    'Weekly',
+    'Monthly',
+    'Yearly'
+]);
+
+/**
+ * Paycheck
+ */
+export const zPaycheck = z.union([
+    z.object({
+        amount: z.int(),
+        period: zPaycheckPeriod
+    }),
+    z.null()
+]);
+
+/**
  * VacancyModel
  */
 export const zVacancyModel = z.object({
-    name: z.string(),
+    id: z.string(),
+    title: z.string(),
     location: z.string(),
-    imageUrl: z.optional(z.union([
+    text: z.string(),
+    imageUrl: z.union([
         z.string(),
         z.null()
-    ]))
+    ]),
+    paycheck: zPaycheck
 });
 
 /**
@@ -22,10 +47,17 @@ export const zPaginatedResponseOfVacancyModel = z.object({
     data: z.array(zVacancyModel)
 });
 
+export const zGetDevSeedData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
 export const zGetVacanciesData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.object({
+        Search: z.optional(z.string()),
         Offset: z.optional(z.int()).default(0),
         Limit: z.optional(z.int()).default(10)
     }))

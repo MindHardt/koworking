@@ -79,6 +79,9 @@ importers:
       tailwindcss:
         specifier: ^4.0.6
         version: 4.1.14
+      use-debounce:
+        specifier: ^10.0.6
+        version: 10.0.6(react@19.2.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.1.9(@types/node@22.18.10)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
@@ -3117,6 +3120,12 @@ packages:
 
   uqr@0.1.2:
     resolution: {integrity: sha512-MJu7ypHq6QasgF5YRTjqscSzQp/W11zoUk6kvmlH+fmWEs63Y0Eib13hYFwAzagRJcVY8WVnlV+eBDUGMJ5IbA==}
+
+  use-debounce@10.0.6:
+    resolution: {integrity: sha512-C5OtPyhAZgVoteO9heXMTdW7v/IbFI+8bSVKYCJrSmiWWCLsbUxiBSp4t9v0hNBTGY97bT72ydDIDyGSFWfwXg==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      react: '*'
 
   use-sync-external-store@1.6.0:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
@@ -6425,6 +6434,10 @@ snapshots:
       picocolors: 1.1.1
 
   uqr@0.1.2: {}
+
+  use-debounce@10.0.6(react@19.2.0):
+    dependencies:
+      react: 19.2.0
 
   use-sync-external-store@1.6.0(react@19.2.0):
     dependencies:

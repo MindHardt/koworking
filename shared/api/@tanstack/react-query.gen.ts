@@ -3,8 +3,8 @@
 import { queryOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { getVacancies, type Options } from '../sdk.gen';
-import type { GetVacanciesData } from '../types.gen';
+import { getDevSeed, getVacancies, type Options } from '../sdk.gen';
+import type { GetDevSeedData, GetVacanciesData } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -39,6 +39,23 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [
         params
     ];
+};
+
+export const getDevSeedQueryKey = (options?: Options<GetDevSeedData>) => createQueryKey('getDevSeed', options);
+
+export const getDevSeedOptions = (options?: Options<GetDevSeedData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await getDevSeed({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: getDevSeedQueryKey(options)
+    });
 };
 
 export const getVacanciesQueryKey = (options?: Options<GetVacanciesData>) => createQueryKey('getVacancies', options);

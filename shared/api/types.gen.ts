@@ -13,18 +13,49 @@ export type PaginatedResponseOfVacancyModel = {
 };
 
 /**
+ * Paycheck
+ */
+export type Paycheck = {
+    amount: number;
+    period: PaycheckPeriod;
+} | null;
+
+/**
+ * PaycheckPeriod
+ */
+export type PaycheckPeriod = 'Hourly' | 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
+
+/**
  * VacancyModel
  */
 export type VacancyModel = {
-    name: string;
+    id: string;
+    title: string;
     location: string;
-    imageUrl?: string | null;
+    text: string;
+    imageUrl: string | null;
+    paycheck: Paycheck;
+};
+
+export type GetDevSeedData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/dev/seed';
+};
+
+export type GetDevSeedResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
 };
 
 export type GetVacanciesData = {
     body?: never;
     path?: never;
     query?: {
+        Search?: string;
         /**
          * Offset (pagination)
          */

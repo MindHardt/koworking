@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetVacanciesData, GetVacanciesResponses } from './types.gen';
+import type { GetDevSeedData, GetDevSeedResponses, GetVacanciesData, GetVacanciesResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -16,6 +16,13 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      * used to access values that aren't defined as part of the SDK function.
      */
     meta?: Record<string, unknown>;
+};
+
+export const getDevSeed = <ThrowOnError extends boolean = false>(options?: Options<GetDevSeedData, ThrowOnError>) => {
+    return (options?.client ?? client).get<GetDevSeedResponses, unknown, ThrowOnError>({
+        url: '/dev/seed',
+        ...options
+    });
 };
 
 export const getVacancies = <ThrowOnError extends boolean = false>(options?: Options<GetVacanciesData, ThrowOnError>) => {
