@@ -22,15 +22,15 @@ public static partial class GetVacancies
         CancellationToken ct)
     {
         var query = dataContext.Vacancies.AsNoTracking();
-        if (string.IsNullOrWhiteSpace(request.Search) is false)
-        {
-            query = query.Where(x => EF.Functions.ILike(
-                x.Title + " " + x.Text,
-                $"%{request.Search}%"));
-        }
+        
+        // ReSharper disable once EntityFramework.UnsupportedServerSideFunctionCall
+        query = string.IsNullOrWhiteSpace(request.Search) is false 
+            ? query
+                .OrderByDescending(x => EF.Functions.ILike(x.Title, $"%{request.Search}%"))
+                .ThenByDescending(x => x.TsVector.Rank(EF.Functions.ToTsQuery(request.Search)))
+            : query.OrderByDescending(x => x.Id);
         
         return TypedResults.Ok(await query
-            .OrderBy(x => x.Id)
             .Project(mapper.ProjectToModels)
             .ToPaginatedResponseAsync(request, ct));
     }

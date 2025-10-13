@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 
 #nullable disable
 
@@ -23,12 +24,21 @@ namespace Koworking.Api.Infrastructure.Data.Migrations
                     image_url = table.Column<string>(type: "text", nullable: true),
                     paycheck_amount = table.Column<int>(type: "integer", nullable: true),
                     paycheck_period = table.Column<short>(type: "smallint", nullable: true),
-                    paycheck_type = table.Column<short>(type: "smallint", nullable: true)
+                    paycheck_type = table.Column<short>(type: "smallint", nullable: true),
+                    ts_vector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: false)
+                        .Annotation("Npgsql:TsVectorConfig", "russian")
+                        .Annotation("Npgsql:TsVectorProperties", new[] { "title", "text" })
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_vacancies", x => x.id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_vacancies_ts_vector",
+                table: "vacancies",
+                column: "ts_vector")
+                .Annotation("Npgsql:IndexMethod", "GIN");
         }
 
         /// <inheritdoc />

@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 
 #nullable disable
 
 namespace Koworking.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251013171139_Initial")]
+    [Migration("20251013173646_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -52,8 +53,21 @@ namespace Koworking.Api.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
+                    b.Property<NpgsqlTsVector>("TsVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasColumnName("ts_vector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "russian")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Title", "Text" });
+
                     b.HasKey("Id")
                         .HasName("pk_vacancies");
+
+                    b.HasIndex("TsVector")
+                        .HasDatabaseName("ix_vacancies_ts_vector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("TsVector"), "GIN");
 
                     b.ToTable("vacancies", (string)null);
                 });

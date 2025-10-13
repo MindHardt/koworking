@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @theme {
-  --color-main: rgb(0, 134, 211)
+  --color-main-50: #f0f9ff;
+  --color-main-100: #e0f1fe;
+  --color-main-200: #b9e4fe;
+  --color-main-300: #7cd0fd;
+  --color-main-400: #36b9fa;
+  --color-main-500: #0ca0eb;
+  --color-main-600: #0086d3;
+  --color-main-700: #0165a3;
+  --color-main-800: #065686;
+  --color-main-900: #0b486f;
+  --color-main-950: #072d4a;
 }
 
 body {

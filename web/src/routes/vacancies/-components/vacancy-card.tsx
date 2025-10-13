@@ -18,7 +18,7 @@ export default function VacancyCard({ vacancy } : {
                 </div>
             </div>
             <div className='shrink flex items-center'>
-                <Bookmark className='text-main' />
+                <Bookmark className='text-main-500' />
             </div>
         </div>
     </div>

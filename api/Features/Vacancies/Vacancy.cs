@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NpgsqlTypes;
+using Riok.Mapperly.Abstractions;
 
 namespace Koworking.Api.Features.Vacancies;
 
@@ -11,12 +13,21 @@ public partial record Vacancy
     public required string Text { get; set; }
     public required string? ImageUrl { get; set; }
     public required Paycheck? Paycheck { get; set; }
+
+    [MapperIgnore]
+    public NpgsqlTsVector TsVector { get; set; } = null!;
     
     public class EntityConfiguration : IEntityTypeConfiguration<Vacancy>
     {
         public void Configure(EntityTypeBuilder<Vacancy> builder)
         {
             builder.OwnsOne(x => x.Paycheck);
+            builder.HasGeneratedTsVectorColumn(
+                x => x.TsVector,
+                "russian",
+                x => new { x.Title, x.Text })
+                .HasIndex(x => x.TsVector)
+                .HasMethod("GIN");
         }
     }
 }

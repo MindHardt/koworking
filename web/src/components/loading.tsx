@@ -4,5 +4,5 @@ import {cn} from "@/utils/cn.ts";
 
 
 export default function Loading({ className, ...props } : ComponentProps<typeof Pencil>) {
-    return <Pencil className={cn('text-main animate-bounce', className)} {...props} />
+    return <Pencil className={cn('text-main-500 animate-bounce', className)} {...props} />
 }
