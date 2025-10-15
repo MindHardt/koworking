@@ -14,12 +14,21 @@ export const zPaycheckPeriod = z.enum([
 ]);
 
 /**
+ * PaycheckType
+ */
+export const zPaycheckType = z.enum([
+    'Net',
+    'Gross'
+]);
+
+/**
  * Paycheck
  */
 export const zPaycheck = z.union([
     z.object({
         amount: z.int(),
-        period: zPaycheckPeriod
+        period: zPaycheckPeriod,
+        type: zPaycheckType
     }),
     z.null()
 ]);
@@ -67,3 +76,16 @@ export const zGetVacanciesData = z.object({
  * OK
  */
 export const zGetVacanciesResponse = zPaginatedResponseOfVacancyModel;
+
+export const zGetVacanciesByIdData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        Id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+/**
+ * OK
+ */
+export const zGetVacanciesByIdResponse = zVacancyModel;

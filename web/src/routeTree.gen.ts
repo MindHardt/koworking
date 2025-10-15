@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VacanciesIndexRouteImport } from './routes/vacancies/index'
+import { Route as VacanciesIdRouteImport } from './routes/vacancies/$id'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const VacanciesIndexRoute = VacanciesIndexRouteImport.update({
   id: '/vacancies/',
   path: '/vacancies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VacanciesIdRoute = VacanciesIdRouteImport.update({
+  id: '/vacancies/$id',
+  path: '/vacancies/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/vacancies/$id': typeof VacanciesIdRoute
   '/vacancies': typeof VacanciesIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/vacancies/$id': typeof VacanciesIdRoute
   '/vacancies': typeof VacanciesIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/vacancies/$id': typeof VacanciesIdRoute
   '/vacancies/': typeof VacanciesIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/api/$'
     | '/demo/tanstack-query'
+    | '/vacancies/$id'
     | '/vacancies'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/api/$'
     | '/demo/tanstack-query'
+    | '/vacancies/$id'
     | '/vacancies'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/api/$'
     | '/demo/tanstack-query'
+    | '/vacancies/$id'
     | '/vacancies/'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiSplatRoute: typeof ApiSplatRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  VacanciesIdRoute: typeof VacanciesIdRoute
   VacanciesIndexRoute: typeof VacanciesIndexRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/vacancies'
       fullPath: '/vacancies'
       preLoaderRoute: typeof VacanciesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vacancies/$id': {
+      id: '/vacancies/$id'
+      path: '/vacancies/$id'
+      fullPath: '/vacancies/$id'
+      preLoaderRoute: typeof VacanciesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiSplatRoute: ApiSplatRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  VacanciesIdRoute: VacanciesIdRoute,
   VacanciesIndexRoute: VacanciesIndexRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoApiTqTodosRoute: DemoApiTqTodosRoute,

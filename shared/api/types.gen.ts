@@ -18,12 +18,18 @@ export type PaginatedResponseOfVacancyModel = {
 export type Paycheck = {
     amount: number;
     period: PaycheckPeriod;
+    type: PaycheckType;
 } | null;
 
 /**
  * PaycheckPeriod
  */
 export type PaycheckPeriod = 'Hourly' | 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
+
+/**
+ * PaycheckType
+ */
+export type PaycheckType = 'Net' | 'Gross';
 
 /**
  * VacancyModel
@@ -76,3 +82,28 @@ export type GetVacanciesResponses = {
 };
 
 export type GetVacanciesResponse = GetVacanciesResponses[keyof GetVacanciesResponses];
+
+export type GetVacanciesByIdData = {
+    body?: never;
+    path: {
+        Id: string;
+    };
+    query?: never;
+    url: '/vacancies/{Id}';
+};
+
+export type GetVacanciesByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
+export type GetVacanciesByIdResponses = {
+    /**
+     * OK
+     */
+    200: VacancyModel;
+};
+
+export type GetVacanciesByIdResponse = GetVacanciesByIdResponses[keyof GetVacanciesByIdResponses];

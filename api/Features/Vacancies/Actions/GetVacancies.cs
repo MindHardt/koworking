@@ -15,6 +15,10 @@ public static partial class GetVacancies
         public string? Search { get; set; }
     }
 
+    internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
+        .WithTags(nameof(Vacancy))
+        .WithDescription("Получение списка вакансий с поиском");
+
     private static async ValueTask<Ok<Paginated.Response<Vacancy.Model>>> HandleAsync(
         Request request,
         DataContext dataContext,

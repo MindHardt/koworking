@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetDevSeedData, GetDevSeedResponses, GetVacanciesData, GetVacanciesResponses } from './types.gen';
+import type { GetDevSeedData, GetDevSeedResponses, GetVacanciesByIdData, GetVacanciesByIdErrors, GetVacanciesByIdResponses, GetVacanciesData, GetVacanciesResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -25,9 +25,22 @@ export const getDevSeed = <ThrowOnError extends boolean = false>(options?: Optio
     });
 };
 
+/**
+ * Получение списка вакансий с поиском
+ */
 export const getVacancies = <ThrowOnError extends boolean = false>(options?: Options<GetVacanciesData, ThrowOnError>) => {
     return (options?.client ?? client).get<GetVacanciesResponses, unknown, ThrowOnError>({
         url: '/vacancies',
+        ...options
+    });
+};
+
+/**
+ * Получение конкретной вакансии
+ */
+export const getVacanciesById = <ThrowOnError extends boolean = false>(options: Options<GetVacanciesByIdData, ThrowOnError>) => {
+    return (options.client ?? client).get<GetVacanciesByIdResponses, GetVacanciesByIdErrors, ThrowOnError>({
+        url: '/vacancies/{Id}',
         ...options
     });
 };

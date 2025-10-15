@@ -3,8 +3,8 @@
 import { queryOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { getDevSeed, getVacancies, type Options } from '../sdk.gen';
-import type { GetDevSeedData, GetVacanciesData } from '../types.gen';
+import { getDevSeed, getVacancies, getVacanciesById, type Options } from '../sdk.gen';
+import type { GetDevSeedData, GetVacanciesByIdData, GetVacanciesData } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -60,6 +60,9 @@ export const getDevSeedOptions = (options?: Options<GetDevSeedData>) => {
 
 export const getVacanciesQueryKey = (options?: Options<GetVacanciesData>) => createQueryKey('getVacancies', options);
 
+/**
+ * Получение списка вакансий с поиском
+ */
 export const getVacanciesOptions = (options?: Options<GetVacanciesData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -72,5 +75,25 @@ export const getVacanciesOptions = (options?: Options<GetVacanciesData>) => {
             return data;
         },
         queryKey: getVacanciesQueryKey(options)
+    });
+};
+
+export const getVacanciesByIdQueryKey = (options: Options<GetVacanciesByIdData>) => createQueryKey('getVacanciesById', options);
+
+/**
+ * Получение конкретной вакансии
+ */
+export const getVacanciesByIdOptions = (options: Options<GetVacanciesByIdData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await getVacanciesById({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: getVacanciesByIdQueryKey(options)
     });
 };
