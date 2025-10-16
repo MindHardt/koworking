@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.RegularExpressions;
 using Immediate.Apis.Shared;
 using Immediate.Handlers.Shared;
 using Koworking.Api.Infrastructure;
@@ -7,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Koworking.Api.Features.Vacancies.Actions;
 
-[Handler, MapGet("vacancies")]
+[Handler, MapGet("/vacancies/")]
 public static partial class GetVacancies
 {
     public record Request : Paginated.Request
@@ -27,15 +29,27 @@ public static partial class GetVacancies
     {
         var query = dataContext.Vacancies.AsNoTracking();
         
-        // ReSharper disable once EntityFramework.UnsupportedServerSideFunctionCall
-        query = string.IsNullOrWhiteSpace(request.Search) is false 
-            ? query
-                .OrderByDescending(x => EF.Functions.ILike(x.Title, $"%{request.Search}%"))
-                .ThenByDescending(x => x.TsVector.Rank(EF.Functions.ToTsQuery(request.Search)))
-            : query.OrderByDescending(x => x.Id);
+        if (string.IsNullOrWhiteSpace(request.Search) is false)
+        {
+            var search = BuildTsQuery(request.Search);
+            query = query
+                // ReSharper disable once EntityFramework.UnsupportedServerSideFunctionCall
+                .Where(x => x.TsVector.Rank(EF.Functions.ToTsQuery(BuildTsQuery(request.Search))) > 0)
+                // ReSharper disable once EntityFramework.UnsupportedServerSideFunctionCall
+                .OrderByDescending(x => x.TsVector.Rank(EF.Functions.ToTsQuery(BuildTsQuery(request.Search))))
+                .ThenByDescending(x => x.CreatedAt);
+        }
+        else
+        {
+            query = query.OrderByDescending(x => x.CreatedAt);
+        }
         
         return TypedResults.Ok(await query
             .Project(mapper.ProjectToModels)
             .ToPaginatedResponseAsync(request, ct));
     }
+
+    private static string BuildTsQuery(string search) => string.Join(" <-> ", search
+        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+        .Select(x => $"{x}:*"));
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
 
@@ -12,6 +13,16 @@ namespace Koworking.Api.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(
+                // lang=postgresql
+                """
+                CREATE FUNCTION gen_vacancy_vector(title TEXT, text TEXT) RETURNS tsvector AS $$
+                BEGIN
+                    RETURN setweight(to_tsvector('russian', title), 'A') || to_tsvector('russian', text);
+                END;
+                $$ LANGUAGE plpgsql IMMUTABLE ;
+                """);
+            
             migrationBuilder.CreateTable(
                 name: "vacancies",
                 columns: table => new
@@ -25,9 +36,9 @@ namespace Koworking.Api.Infrastructure.Data.Migrations
                     paycheck_amount = table.Column<int>(type: "integer", nullable: true),
                     paycheck_period = table.Column<short>(type: "smallint", nullable: true),
                     paycheck_type = table.Column<short>(type: "smallint", nullable: true),
-                    ts_vector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: false)
-                        .Annotation("Npgsql:TsVectorConfig", "russian")
-                        .Annotation("Npgsql:TsVectorProperties", new[] { "title", "text" })
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ts_vector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: false, computedColumnSql: "gen_vacancy_vector(title, text)", stored: true)
                 },
                 constraints: table =>
                 {
@@ -46,6 +57,13 @@ namespace Koworking.Api.Infrastructure.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "vacancies");
+            
+            migrationBuilder.Sql(
+                // lang=postgresql
+                """
+                -- noinspection SqlResolve
+                DROP FUNCTION gen_vacancy_vector
+                """);
         }
     }
 }

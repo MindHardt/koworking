@@ -20,7 +20,7 @@ function RouteComponent() {
         return <ErrorMessage error={error} />
     }
     if (!vacancy) {
-        return <Loading />
+        return <Loading className='py-5' />
     }
     return <div className='flex flex-col gap-3 p-5'>
         {vacancy.imageUrl && <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full max-h-64 rounded-2xl object-fill" />}

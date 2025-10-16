@@ -14,6 +14,9 @@ public partial record Vacancy
     public required string? ImageUrl { get; set; }
     public required Paycheck? Paycheck { get; set; }
 
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
+
     [MapperIgnore]
     public NpgsqlTsVector TsVector { get; set; } = null!;
     
@@ -22,12 +25,9 @@ public partial record Vacancy
         public void Configure(EntityTypeBuilder<Vacancy> builder)
         {
             builder.OwnsOne(x => x.Paycheck);
-            builder.HasGeneratedTsVectorColumn(
-                x => x.TsVector,
-                "russian",
-                x => new { x.Title, x.Text })
-                .HasIndex(x => x.TsVector)
-                .HasMethod("GIN");
+            builder.Property(x => x.TsVector)
+                .HasComputedColumnSql("gen_vacancy_vector(title, text)", stored: true);
+            builder.HasIndex(x => x.TsVector).HasMethod("GIN");
         }
     }
 }
