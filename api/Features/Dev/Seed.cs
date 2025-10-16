@@ -8,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Koworking.Api.Features.Dev;
 
-[Handler, MapGet("/dev/seed")]
+[Handler, MapPost("/dev/seed")]
 public static partial class Seed
 {
-    public record Request;
+    public record Request
+    {
+        public int? Vacancies { get; set; }
+    }
 
     private static async ValueTask<Ok> HandleAsync(
-        Request _,
+        Request request,
         DataContext dataContext,
         Faker faker,
         CancellationToken ct)
@@ -22,7 +25,7 @@ public static partial class Seed
         await using var transaction = await dataContext.Database.BeginTransactionAsync(ct);
         await dataContext.Vacancies.Where(_ => true).ExecuteDeleteAsync(ct);
         
-        dataContext.Vacancies.AddRange(Enumerable.Range(0, 20)
+        dataContext.Vacancies.AddRange(Enumerable.Range(0, request.Vacancies ?? 20)
             .Select(_ =>
             {
                 var title = faker.Name.JobTitle();

@@ -5,10 +5,23 @@ export type ClientOptions = {
 };
 
 /**
+ * CreateVacancyRequest
+ */
+export type CreateVacancyRequest = {
+    title: string;
+    location: string;
+    text: string;
+    imageUrl: string | null;
+    paycheck: Paycheck;
+};
+
+/**
  * PaginatedResponseOfVacancyModel
  */
 export type PaginatedResponseOfVacancyModel = {
     total: number;
+    offset: number;
+    limit: number;
     data: Array<VacancyModel>;
 };
 
@@ -36,6 +49,8 @@ export type PaycheckType = 'Net' | 'Gross';
  */
 export type VacancyModel = {
     id: string;
+    createdAt: string;
+    updatedAt: string;
     title: string;
     location: string;
     text: string;
@@ -82,6 +97,22 @@ export type GetVacanciesResponses = {
 };
 
 export type GetVacanciesResponse = GetVacanciesResponses[keyof GetVacanciesResponses];
+
+export type PostVacanciesData = {
+    body?: CreateVacancyRequest;
+    path?: never;
+    query?: never;
+    url: '/vacancies';
+};
+
+export type PostVacanciesResponses = {
+    /**
+     * OK
+     */
+    200: VacancyModel;
+};
+
+export type PostVacanciesResponse = PostVacanciesResponses[keyof PostVacanciesResponses];
 
 export type GetVacanciesByIdData = {
     body?: never;

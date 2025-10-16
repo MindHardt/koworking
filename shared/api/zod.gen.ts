@@ -34,10 +34,26 @@ export const zPaycheck = z.union([
 ]);
 
 /**
+ * CreateVacancyRequest
+ */
+export const zCreateVacancyRequest = z.object({
+    title: z.string(),
+    location: z.string(),
+    text: z.string(),
+    imageUrl: z.union([
+        z.string(),
+        z.null()
+    ]),
+    paycheck: zPaycheck
+});
+
+/**
  * VacancyModel
  */
 export const zVacancyModel = z.object({
     id: z.string(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
     title: z.string(),
     location: z.string(),
     text: z.string(),
@@ -53,6 +69,8 @@ export const zVacancyModel = z.object({
  */
 export const zPaginatedResponseOfVacancyModel = z.object({
     total: z.int(),
+    offset: z.int(),
+    limit: z.int(),
     data: z.array(zVacancyModel)
 });
 
@@ -76,6 +94,17 @@ export const zGetVacanciesData = z.object({
  * OK
  */
 export const zGetVacanciesResponse = zPaginatedResponseOfVacancyModel;
+
+export const zPostVacanciesData = z.object({
+    body: z.optional(zCreateVacancyRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * OK
+ */
+export const zPostVacanciesResponse = zVacancyModel;
 
 export const zGetVacanciesByIdData = z.object({
     body: z.optional(z.never()),

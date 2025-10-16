@@ -9,14 +9,13 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton(sp =>
+    new NpgsqlDataSourceBuilder(sp.GetRequiredService<IConfiguration>().GetConnectionString("Postgres"))
+        .EnableDynamicJson()
+        .Build());
 builder.Services.AddDbContext<DataContext>((sp, ef) =>
 {
-    var connStr = sp.GetRequiredService<IConfiguration>().GetConnectionString("Postgres");
-    var source = new NpgsqlDataSourceBuilder(connStr)
-        .EnableDynamicJson()
-        .ConfigureJsonOptions(JsonDefaults.Options)
-        .Build();
-    ef.UseNpgsql(source);
+    ef.UseNpgsql(sp.GetRequiredService<NpgsqlDataSource>());
 });
 
 builder.Services.AddOpenApi(openApi =>
