@@ -17,10 +17,9 @@ export const Route = createFileRoute('/vacancies/')({
     search: z.string().optional(),
     page: z.int().min(1).optional().default(1)
   }),
-  beforeLoad: async ({ search }) => {
-    return getVacancies({ client, query: { Search: search.search, ...pagination(search.page) } })
-        .then(x => ({ vacancies: x.data }));
-  }
+  beforeLoad: async ({ search }) =>
+      getVacancies({ client, query: { Search: search.search, ...pagination(search.page, 15) } })
+          .then(x => ({ vacancies: x.data }))
 });
 
 function RouteComponent() {
@@ -29,7 +28,7 @@ function RouteComponent() {
   const navigate = useNavigate(navigation);
   const { search, page } = Route.useSearch();
   const { data: res, isFetching, error } = useQuery({
-    ...getVacanciesOptions({ client, query: { Search: search, ...pagination(page) }}),
+    ...getVacanciesOptions({ client, query: { Search: search, ...pagination(page, 15) }}),
     placeholderData: keepPreviousData,
     staleTime: 30 * 1000,
     initialData: Route.useRouteContext().vacancies
@@ -47,13 +46,11 @@ function RouteComponent() {
 
   return <div className='p-4 flex flex-col gap-4 items-center'>
     <SearchBar initialSearch={search} searching={isFetching} onSearch={setSearch} />
-    {res && <Paginator response={res} getLink={getPage} />}
-    <div className='flex flex-col gap-2 max-w-192 mx-auto'>
-      {error && <ErrorMessage error={error} />}
-      {vacancies?.length === 0
-          ? <InfoMessage title='Ничего не найдено' message='По вашему запросу мы ничего не нашли' />
-          : vacancies?.map(v => <VacancyCard key={v.id} vacancy={v} />)}
-    </div>
+    {error ? <ErrorMessage error={error} /> : vacancies?.length === 0
+        ? <InfoMessage title='Ничего не найдено' message='По вашему запросу мы ничего не нашли' />
+        : <div className='grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+          {vacancies?.map(v => <VacancyCard key={v.id} vacancy={v} />)}
+        </div>}
     {res && <Paginator response={res} getLink={getPage} />}
   </div>
 }

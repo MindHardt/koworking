@@ -34,7 +34,7 @@ public static partial class Seed
                     Title = title,
                     Location = faker.Address.City(),
                     Text = faker.Lorem.Paragraphs(),
-                    ImageUrl = faker.PickRandom(null, faker.Image.DataUri(640, 480, faker.Random.Hexadecimal(6, "#"))),
+                    ImageUrl = $"https://lipsum.app/id/{faker.Random.Int(1, 99)}/1600x900",
                     Paycheck = faker.PickRandom(null, new Paycheck
                     {
                         Amount = faker.Random.Int(20, 200) * 1000,
