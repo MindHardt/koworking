@@ -44,11 +44,16 @@ function RouteComponent() {
 
   const vacancies = res?.data;
 
-  return <div className='p-4 flex flex-col gap-4 items-center'>
+  return <div className='p-4 flex flex-col gap-7'>
+    <div className='text-2xl font-semibold md:mx-auto'>
+      <span className='text-2xl'>Найти с </span>
+      <span className='text-2xl text-main-500'>Koworking!</span>
+    </div>
+
     <SearchBar initialSearch={search} searching={isFetching} onSearch={setSearch} />
     {error ? <ErrorMessage error={error} /> : vacancies?.length === 0
         ? <InfoMessage title='Ничего не найдено' message='По вашему запросу мы ничего не нашли' />
-        : <div className='grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+        : <div className='grid gap-x-5 gap-y-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full'>
           {vacancies?.map(v => <VacancyCard key={v.id} vacancy={v} />)}
         </div>}
     {res && <Paginator response={res} getLink={getPage} />}
