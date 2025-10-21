@@ -1,3 +1,4 @@
+using Koworking.Api.Features.Users;
 using Koworking.Api.Features.Vacancies;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace Koworking.Api.Infrastructure.Data;
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
     public DbSet<Vacancy> Vacancies => Set<Vacancy>();
+    public DbSet<Koworker> Koworkers => Set<Koworker>();                                     
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

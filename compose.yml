@@ -14,3 +14,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+      
+  keycloak:
+    restart: unless-stopped
+    image: quay.io/keycloak/keycloak:26.4
+    ports: [ "9001:8080" ]
+    command: [ "start-dev" ]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/keycloak?user=keycloak&password=keycloak

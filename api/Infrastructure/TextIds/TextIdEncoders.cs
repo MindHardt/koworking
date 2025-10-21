@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Numerics;
+using Koworking.Api.Features.Users;
 using Koworking.Api.Features.Vacancies;
 using Sqids;
 
@@ -12,6 +13,7 @@ public class TextIdEncoders(IConfiguration configuration)
     private readonly ConcurrentDictionary<string, SqidsOptions> _options = [];
 
     public SqidsEncoder<long> Vacancies => GetEncoder<long, Vacancy>();
+    public SqidsEncoder<long> Koworkers => GetEncoder<long, Koworker>();
     
     private SqidsOptions GetOptions(string name) => _options.GetOrAdd(name, _ => 
         _section.GetSection(name).Get<SqidsOptions>() ?? 

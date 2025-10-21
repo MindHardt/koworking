@@ -12,6 +12,7 @@
     <PackageReference Include="Bogus" Version="35.6.4" />
     <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
     <PackageReference Include="Immediate.Apis" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
@@ -37,6 +38,12 @@
     </Compile>
     <Compile Update="Features\Vacancies\Vacancy.Mapper.cs">
       <DependentUpon>Vacancy.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Users\Koworker.Models.cs">
+      <DependentUpon>Koworker.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Users\Koworker.Mapper.cs">
+      <DependentUpon>Koworker.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 
