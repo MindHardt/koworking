@@ -83,7 +83,7 @@ await using (var scope = app.Services.CreateAsyncScope())
 if (app.Environment.IsProduction() is false)
 {
     app.MapOpenApi();
-    app.MapScalarApiReference("/scalar");
+    app.MapScalarApiReference("/scalar", scalar => scalar.AddPreferredSecuritySchemes(JwtBearerDefaults.AuthenticationScheme));
     app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
 }
 

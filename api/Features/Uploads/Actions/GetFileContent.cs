@@ -20,7 +20,8 @@ public static partial class GetFileContent
     }
     
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
-        .WithTags(nameof(Upload));
+        .WithTags(nameof(Upload))
+        .WithDescription("Загружает файл из хранилища");
 
     private static async ValueTask<Results<NotFound, FileStreamHttpResult>> HandleAsync(
         Request request,

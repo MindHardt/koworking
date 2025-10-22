@@ -8,8 +8,8 @@ export default function VacancyCard({ vacancy } : {
 
     return <Link to='/vacancies/$id' params={{ id: vacancy.id }}
         className='w-full rounded-4xl shadow-xl flex flex-col gap-0 transition-[scale] hover:scale-105'>
-        {vacancy.imageUrl && <div className='h-50 w-full'>
-            <img className='size-full rounded-t-4xl' src={vacancy.imageUrl} alt={vacancy.title} />
+        {vacancy.imageUrl && <div className='h-50 w-full overflow-hidden'>
+            <img className='w-full rounded-t-4xl' src={vacancy.imageUrl} alt={vacancy.title} />
         </div>}
         <div className='flex flex-row gap-1 p-4'>
             <div className='flex flex-col gap-1 grow'>

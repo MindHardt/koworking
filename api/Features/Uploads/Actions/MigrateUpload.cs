@@ -20,6 +20,7 @@ public static partial class MigrateUpload
     
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
         .WithTags(nameof(Upload))
+        .WithDescription("Загрузка файла из интернета по URL")
         .RequireAuthorization();
 
     private static async ValueTask<Results<UnprocessableEntity, Ok<Upload.Model>>> HandleAsync(

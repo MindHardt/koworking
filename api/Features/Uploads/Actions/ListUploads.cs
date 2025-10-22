@@ -19,6 +19,7 @@ public static partial class ListUploads
 
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
         .WithTags(nameof(Upload))
+        .WithDescription("Поиск ранее загруженных файлов пользователя")
         .RequireAuthorization();
 
     private static async ValueTask<Ok<Paginated.Response<Upload.Model>>> HandleAsync(

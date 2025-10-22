@@ -19,6 +19,7 @@ public static partial class PostUpload
     
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
         .WithTags(nameof(Upload))
+        .WithDescription("Загрузка файла пользователем")
         .DisableAntiforgery()
         .RequireAuthorization();
     

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
@@ -9,22 +10,22 @@ public class SecuritySchemeTransformer : IOpenApiDocumentTransformer
     {
         doc.Components ??= new OpenApiComponents();
         doc.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
-        doc.Components.SecuritySchemes["Keycloak"] = new OpenApiSecurityScheme
+        doc.Components.SecuritySchemes[JwtBearerDefaults.AuthenticationScheme] = new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
-            Scheme = "Bearer",
+            Scheme = JwtBearerDefaults.AuthenticationScheme,
             BearerFormat = "jwt",
             Description = "Keycloak Bearer Token"
         };
         if (ctx.ApplicationServices.GetRequiredService<IHostEnvironment>().IsDevelopment())
         {
-            doc.Components.SecuritySchemes["Fake"] = new OpenApiSecurityScheme
+            doc.Components.SecuritySchemes[FakeAuth.Scheme] = new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.ApiKey,
                 Description = "Fake auth for tests",
                 Name = "x-user-id",
                 In = ParameterLocation.Header,
-                Scheme = "Fake",
+                Scheme = FakeAuth.Scheme,
             };
         }
 

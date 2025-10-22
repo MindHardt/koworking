@@ -30,8 +30,10 @@ function RouteComponent() {
         return <Loading className='py-5' />
     }
 
-    return <div className='flex flex-col gap-3 p-5'>
-        {vacancy.imageUrl && <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full max-h-64 rounded-2xl object-fill" />}
+    return <div className='flex flex-col gap-3 p-5 max-w-lg mx-auto'>
+        {vacancy.imageUrl && <Card className='px-0 py-0'>
+            <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full rounded-2xl object-fill" />
+        </Card>}
         <h1 className='text-2xl font-semibold'>{vacancy.title}</h1>
         <Card>
             <h2 className='text-xl font-semibold'>Описание работы</h2>

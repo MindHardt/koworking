@@ -18,7 +18,7 @@ export const Route = createFileRoute('/vacancies/')({
     page: z.int().min(1).optional().default(1)
   }),
   beforeLoad: async ({ search }) =>
-      getVacancies({ client, query: { Search: search.search, ...pagination(search.page, 15) } })
+      getVacancies({ client, query: { Search: search.search, ...pagination(search.page, 24) } })
           .then(x => ({ vacancies: x.data }))
 });
 
@@ -28,7 +28,7 @@ function RouteComponent() {
   const navigate = useNavigate(navigation);
   const { search, page } = Route.useSearch();
   const { data: res, isFetching, error } = useQuery({
-    ...getVacanciesOptions({ client, query: { Search: search, ...pagination(page, 15) }}),
+    ...getVacanciesOptions({ client, query: { Search: search, ...pagination(page, 24) }}),
     placeholderData: keepPreviousData,
     staleTime: 30 * 1000,
     initialData: Route.useRouteContext().vacancies
@@ -53,7 +53,7 @@ function RouteComponent() {
     <SearchBar initialSearch={search} searching={isFetching} onSearch={setSearch} />
     {error ? <ErrorMessage error={error} /> : vacancies?.length === 0
         ? <InfoMessage title='Ничего не найдено' message='По вашему запросу мы ничего не нашли' />
-        : <div className='grid gap-x-5 gap-y-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full'>
+        : <div className='grid gap-x-5 gap-y-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full'>
           {vacancies?.map(v => <VacancyCard key={v.id} vacancy={v} />)}
         </div>}
     {res && <Paginator response={res} getLink={getPage} />}

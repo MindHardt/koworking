@@ -19,6 +19,7 @@ public static partial class DeleteUpload
 
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
         .WithTags(nameof(Upload))
+        .WithDescription("Удаляет загруженный ранее файл")
         .RequireAuthorization();
 
     private static async ValueTask<Results<Ok, NotFound, ForbidHttpResult>> HandleAsync(
