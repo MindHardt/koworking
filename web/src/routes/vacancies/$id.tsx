@@ -13,10 +13,8 @@ export const Route = createFileRoute('/vacancies/$id')({
 })
 
 const components: Components = {
-    ol(props) {
-        const { className, ...rest } = props;
-        return <ol className={cn('list-decimal ms-4', className)} {...rest}></ol>
-    }
+    ol: ({ className, ...rest })=>
+        <ol className={cn('list-decimal ms-4', className)} {...rest}></ol>
 }
 function RouteComponent() {
 
@@ -31,6 +29,7 @@ function RouteComponent() {
     if (!vacancy) {
         return <Loading className='py-5' />
     }
+
     return <div className='flex flex-col gap-3 p-5'>
         {vacancy.imageUrl && <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full max-h-64 rounded-2xl object-fill" />}
         <h1 className='text-2xl font-semibold'>{vacancy.title}</h1>

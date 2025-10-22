@@ -7,5 +7,6 @@ public partial record Koworker
     public record Model
     {
         public required TextId Id { get; set; }
+        public required string? AvatarUrl { get; set; }
     }
 }

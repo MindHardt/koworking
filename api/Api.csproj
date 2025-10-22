@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoRegisterInject" Version="1.4.1" />
+    <PackageReference Include="AWSSDK.S3" Version="4.0.7.13" />
     <PackageReference Include="Bogus" Version="35.6.4" />
     <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
     <PackageReference Include="Immediate.Apis" Version="3.2.0" />
@@ -19,6 +20,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.10.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Riok.Mapperly" Version="4.2.1" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.8.11" />
@@ -39,11 +42,19 @@
     <Compile Update="Features\Vacancies\Vacancy.Mapper.cs">
       <DependentUpon>Vacancy.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Features\Users\Koworker.Models.cs">
       <DependentUpon>Koworker.cs</DependentUpon>
     </Compile>
     <Compile Update="Features\Users\Koworker.Mapper.cs">
       <DependentUpon>Koworker.cs</DependentUpon>
+    </Compile>
+    
+    <Compile Update="Features\Uploads\Upload.Mapper.cs">
+      <DependentUpon>Upload.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Uploads\Upload.Models.cs">
+      <DependentUpon>Upload.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

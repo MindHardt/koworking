@@ -1,5 +1,6 @@
 using Bogus;
 using Koworking.Api;
+using Koworking.Api.Features.Uploads;
 using Koworking.Api.Infrastructure;
 using Koworking.Api.Infrastructure.Data;
 using Koworking.Api.Infrastructure.OpenApi;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using Scalar.AspNetCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,26 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddFakeAuth();
 }
 
+builder.Services.AddS3FileStorage();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
+
+builder.Services.AddHybridCache();
+if (builder.Configuration.GetConnectionString("Redis") is { Length: > 0 } redisConnection)
+{
+    var multiplexer = await ConnectionMultiplexer.ConnectAsync(redisConnection);
+    builder.Services.AddSingleton(multiplexer);
+    builder.Services.AddStackExchangeRedisCache(redis =>
+    {
+        redis.ConnectionMultiplexerFactory = () => Task.FromResult<IConnectionMultiplexer>(multiplexer);
+    });
+}
+else
+{
+    builder.Services.AddDistributedMemoryCache();
+}
+
 builder.Services.AddOpenApi(openApi =>
 {
     openApi.AddSchemaTransformer<SchemaNamingTransformer>();
@@ -51,6 +73,10 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     await scope.ServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
+    if (builder.Environment.IsProduction() is false)
+    {
+        await scope.ServiceProvider.GetRequiredService<S3FileStorage>().Initialize();
+    }
 }
 
 // Configure the HTTP request pipeline.
