@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetDevSeedData, GetDevSeedResponses, GetVacanciesByIdData, GetVacanciesByIdErrors, GetVacanciesByIdResponses, GetVacanciesData, GetVacanciesResponses, PostVacanciesData, PostVacanciesResponses } from './types.gen';
+import type { GetKoworkersMeData, GetKoworkersMeResponses, GetVacanciesByIdData, GetVacanciesByIdErrors, GetVacanciesByIdResponses, GetVacanciesData, GetVacanciesResponses, PostDevSeedData, PostDevSeedResponses, PostVacanciesData, PostVacanciesResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -18,9 +18,23 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
     meta?: Record<string, unknown>;
 };
 
-export const getDevSeed = <ThrowOnError extends boolean = false>(options?: Options<GetDevSeedData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetDevSeedResponses, unknown, ThrowOnError>({
+export const postDevSeed = <ThrowOnError extends boolean = false>(options?: Options<PostDevSeedData, ThrowOnError>) => {
+    return (options?.client ?? client).post<PostDevSeedResponses, unknown, ThrowOnError>({
         url: '/dev/seed',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+        }
+    });
+};
+
+/**
+ * Получение данных текущего пользователя
+ */
+export const getKoworkersMe = <ThrowOnError extends boolean = false>(options?: Options<GetKoworkersMeData, ThrowOnError>) => {
+    return (options?.client ?? client).get<GetKoworkersMeResponses, unknown, ThrowOnError>({
+        url: '/koworkers/me',
         ...options
     });
 };

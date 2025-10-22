@@ -24,12 +24,14 @@ public static partial class CreateVacancy
         var vacancy = new Vacancy
         {
             Title = request.Title,
-            Text = request.Text,
+            Description = request.Description,
+            Conditions = request.Conditions,
+            Expectations = request.Expectations,
             ImageUrl = request.ImageUrl,
             Location = request.Location,
             Paycheck = request.Paycheck,
             CreatedAt = now,
-            UpdatedAt = now
+            UpdatedAt = now,
         };
         dataContext.Vacancies.Add(vacancy);
         await dataContext.SaveChangesAsync(ct);

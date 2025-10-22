@@ -8,7 +8,9 @@ public partial record Vacancy
     {
         public required string Title { get; set; }
         public required string Location { get; set; }
-        public required string Text { get; set; }
+        public required string Description { get; set; }
+        public required string Conditions { get; set; }
+        public required string Expectations { get; set; }
         public required string? ImageUrl { get; set; }
         public required Paycheck? Paycheck { get; set; }
     }

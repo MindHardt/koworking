@@ -10,9 +10,18 @@ export type ClientOptions = {
 export type CreateVacancyRequest = {
     title: string;
     location: string;
-    text: string;
+    description: string;
+    conditions: string;
+    expectations: string;
     imageUrl: string | null;
     paycheck: Paycheck;
+};
+
+/**
+ * KoworkerModel
+ */
+export type KoworkerModel = {
+    id: string;
 };
 
 /**
@@ -45,6 +54,13 @@ export type PaycheckPeriod = 'Hourly' | 'Daily' | 'Weekly' | 'Monthly' | 'Yearly
 export type PaycheckType = 'Net' | 'Gross';
 
 /**
+ * SeedRequest
+ */
+export type SeedRequest = {
+    vacancies?: number | null;
+};
+
+/**
  * VacancyModel
  */
 export type VacancyModel = {
@@ -53,24 +69,42 @@ export type VacancyModel = {
     updatedAt: string;
     title: string;
     location: string;
-    text: string;
+    description: string;
+    conditions: string;
+    expectations: string;
     imageUrl: string | null;
     paycheck: Paycheck;
 };
 
-export type GetDevSeedData = {
-    body?: never;
+export type PostDevSeedData = {
+    body?: SeedRequest;
     path?: never;
     query?: never;
     url: '/dev/seed';
 };
 
-export type GetDevSeedResponses = {
+export type PostDevSeedResponses = {
     /**
      * OK
      */
     200: unknown;
 };
+
+export type GetKoworkersMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/koworkers/me';
+};
+
+export type GetKoworkersMeResponses = {
+    /**
+     * OK
+     */
+    200: KoworkerModel;
+};
+
+export type GetKoworkersMeResponse = GetKoworkersMeResponses[keyof GetKoworkersMeResponses];
 
 export type GetVacanciesData = {
     body?: never;

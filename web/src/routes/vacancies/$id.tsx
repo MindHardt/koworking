@@ -4,11 +4,20 @@ import {getVacanciesByIdOptions} from "koworking-shared/api/@tanstack/react-quer
 import {client} from "@/utils/backend.ts";
 import ErrorMessage from "@/components/error-message.tsx";
 import Loading from "@/components/loading.tsx";
+import Card from "@/components/card.tsx";
+import Markdown, {Components} from "react-markdown";
+import {cn} from "@/utils/cn.ts";
 
 export const Route = createFileRoute('/vacancies/$id')({
     component: RouteComponent
 })
 
+const components: Components = {
+    ol(props) {
+        const { className, ...rest } = props;
+        return <ol className={cn('list-decimal ms-4', className)} {...rest}></ol>
+    }
+}
 function RouteComponent() {
 
     const { id } = Route.useParams();
@@ -25,6 +34,17 @@ function RouteComponent() {
     return <div className='flex flex-col gap-3 p-5'>
         {vacancy.imageUrl && <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full max-h-64 rounded-2xl object-fill" />}
         <h1 className='text-2xl font-semibold'>{vacancy.title}</h1>
-        <p>{vacancy.text}</p>
+        <Card>
+            <h2 className='text-xl font-semibold'>Описание работы</h2>
+            <Markdown components={components}>{vacancy.description}</Markdown>
+        </Card>
+        <Card>
+            <h2 className='text-xl font-semibold'>Предлагаем</h2>
+            <Markdown components={components}>{vacancy.conditions}</Markdown>
+        </Card>
+        <Card>
+            <h2 className='text-xl font-semibold'>Требования к работе</h2>
+            <Markdown components={components}>{vacancy.expectations}</Markdown>
+        </Card>
     </div>
 }

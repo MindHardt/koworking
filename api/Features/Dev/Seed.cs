@@ -33,7 +33,9 @@ public static partial class Seed
                 {
                     Title = title,
                     Location = faker.Address.City(),
-                    Text = faker.Lorem.Paragraphs(),
+                    Description = faker.Lorem.Paragraph(),
+                    Conditions = string.Join('\n', faker.MakeLazy(faker.Random.Int(2, 5), i => $"{i}. {faker.Lorem.Sentence()}")),
+                    Expectations = string.Join('\n', faker.MakeLazy(faker.Random.Int(2, 5), i => $"{i}. {faker.Lorem.Sentence()}")),
                     ImageUrl = $"https://lipsum.app/id/{faker.Random.Int(1, 99)}/1600x900",
                     Paycheck = faker.PickRandom(null, new Paycheck
                     {

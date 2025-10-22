@@ -39,12 +39,21 @@ export const zPaycheck = z.union([
 export const zCreateVacancyRequest = z.object({
     title: z.string(),
     location: z.string(),
-    text: z.string(),
+    description: z.string(),
+    conditions: z.string(),
+    expectations: z.string(),
     imageUrl: z.union([
         z.string(),
         z.null()
     ]),
     paycheck: zPaycheck
+});
+
+/**
+ * KoworkerModel
+ */
+export const zKoworkerModel = z.object({
+    id: z.string()
 });
 
 /**
@@ -56,7 +65,9 @@ export const zVacancyModel = z.object({
     updatedAt: z.iso.datetime(),
     title: z.string(),
     location: z.string(),
-    text: z.string(),
+    description: z.string(),
+    conditions: z.string(),
+    expectations: z.string(),
     imageUrl: z.union([
         z.string(),
         z.null()
@@ -74,11 +85,32 @@ export const zPaginatedResponseOfVacancyModel = z.object({
     data: z.array(zVacancyModel)
 });
 
-export const zGetDevSeedData = z.object({
+/**
+ * SeedRequest
+ */
+export const zSeedRequest = z.object({
+    vacancies: z.optional(z.union([
+        z.int(),
+        z.null()
+    ]))
+});
+
+export const zPostDevSeedData = z.object({
+    body: z.optional(zSeedRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+export const zGetKoworkersMeData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
+
+/**
+ * OK
+ */
+export const zGetKoworkersMeResponse = zKoworkerModel;
 
 export const zGetVacanciesData = z.object({
     body: z.optional(z.never()),

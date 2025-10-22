@@ -3,8 +3,22 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { getDevSeed, getVacancies, getVacanciesById, type Options, postVacancies } from '../sdk.gen';
-import type { GetDevSeedData, GetVacanciesByIdData, GetVacanciesData, PostVacanciesData, PostVacanciesResponse } from '../types.gen';
+import { getKoworkersMe, getVacancies, getVacanciesById, type Options, postDevSeed, postVacancies } from '../sdk.gen';
+import type { GetKoworkersMeData, GetVacanciesByIdData, GetVacanciesData, PostDevSeedData, PostVacanciesData, PostVacanciesResponse } from '../types.gen';
+
+export const postDevSeedMutation = (options?: Partial<Options<PostDevSeedData>>): UseMutationOptions<unknown, DefaultError, Options<PostDevSeedData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostDevSeedData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postDevSeed({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -41,12 +55,15 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     ];
 };
 
-export const getDevSeedQueryKey = (options?: Options<GetDevSeedData>) => createQueryKey('getDevSeed', options);
+export const getKoworkersMeQueryKey = (options?: Options<GetKoworkersMeData>) => createQueryKey('getKoworkersMe', options);
 
-export const getDevSeedOptions = (options?: Options<GetDevSeedData>) => {
+/**
+ * Получение данных текущего пользователя
+ */
+export const getKoworkersMeOptions = (options?: Options<GetKoworkersMeData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getDevSeed({
+            const { data } = await getKoworkersMe({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -54,7 +71,7 @@ export const getDevSeedOptions = (options?: Options<GetDevSeedData>) => {
             });
             return data;
         },
-        queryKey: getDevSeedQueryKey(options)
+        queryKey: getKoworkersMeQueryKey(options)
     });
 };
 

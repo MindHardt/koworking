@@ -10,7 +10,9 @@ public partial record Vacancy
     public long Id { get; set; }
     public required string Title { get; set; }
     public required string Location { get; set; }
-    public required string Text { get; set; }
+    public required string Description { get; set; }
+    public required string Conditions { get; set; }
+    public required string Expectations { get; set; }
     public required string? ImageUrl { get; set; }
     public required Paycheck? Paycheck { get; set; }
 
@@ -26,7 +28,7 @@ public partial record Vacancy
         {
             builder.OwnsOne(x => x.Paycheck);
             builder.Property(x => x.TsVector)
-                .HasComputedColumnSql("gen_vacancy_vector(title, text)", stored: true);
+                .HasComputedColumnSql("gen_vacancy_vector(title, array [description, conditions, expectations])", stored: true);
             builder.HasIndex(x => x.TsVector).HasMethod("GIN");
         }
     }
