@@ -4,11 +4,10 @@ using Koworking.Api.Features.Uploads;
 using Koworking.Api.Infrastructure;
 using Koworking.Api.Infrastructure.Data;
 using Koworking.Api.Infrastructure.OpenApi;
-using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Npgsql;
 using Scalar.AspNetCore;
 using Serilog;
@@ -34,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddDataProtection().PersistKeysToDbContext<DataContext>();
 builder.Services.AddAuthorization();
-if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsProduction() is false)
 {
     builder.Services.AddFakeAuth();
 }
@@ -53,7 +52,7 @@ if (builder.Configuration.GetConnectionString("Redis") is { Length: > 0 } redisC
     }));
     builder.Services.AddStackExchangeRedisCache(redis =>
     {
-        redis.Configuration = builder.Configuration["Redis:Configuration"];
+        redis.Configuration = redisConnection;
     });
 }
 else
@@ -67,6 +66,7 @@ builder.Services.AddOpenApi(openApi =>
     openApi.AddSchemaTransformer<ValueObjectTransformer>();
     openApi.AddDocumentTransformer<SecuritySchemeTransformer>();
     openApi.AddDocumentTransformer<SecuritySchemeTransformer>();
+    openApi.AddDocumentTransformer<ServerUrlTransformer>();
     openApi.CreateSchemaReferenceId = type => SchemaNamingTransformer.GetTypeName(type.Type);
 });
 builder.Services.ConfigureHttpJsonOptions(httpJson => httpJson.SerializerOptions.SetDefaults());
@@ -86,12 +86,17 @@ await using (var scope = app.Services.CreateAsyncScope())
     }
 }
 
+app.UsePathBase("/api");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction() is false)
 {
     app.MapOpenApi();
-    app.MapScalarApiReference("/scalar", scalar => scalar.AddPreferredSecuritySchemes(JwtBearerDefaults.AuthenticationScheme));
-    app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
+    app.MapScalarApiReference("/api/scalar/", scalar =>
+    {
+        scalar.AddPreferredSecuritySchemes(JwtBearerDefaults.AuthenticationScheme, FakeAuth.Scheme);
+    });
+    app.MapGet("/", () => Results.Redirect("/api/scalar/")).ExcludeFromDescription();
 }
 
 app.UseAuthentication();

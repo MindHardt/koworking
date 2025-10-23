@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Vogen;
 
 namespace Koworking.Api.Features.Uploads;

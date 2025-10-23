@@ -5,7 +5,6 @@ using Koworking.Api.Infrastructure.Data;
 using Koworking.Api.Infrastructure.TextIds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
-using StackExchange.Redis;
 
 namespace Koworking.Api.Features.Users;
 

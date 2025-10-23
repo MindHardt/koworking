@@ -1,10 +1,6 @@
-using System.Security.Claims;
 using Immediate.Apis.Shared;
 using Immediate.Handlers.Shared;
-using Koworking.Api.Infrastructure;
-using Koworking.Api.Infrastructure.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 
 namespace Koworking.Api.Features.Users.Actions;
 

@@ -22,6 +22,11 @@ public static partial class Seed
         [FromQuery]
         public int? Vacancies { get; set; }
     }
+    
+    internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
+        .WithTags(nameof(Seed))
+        .WithDescription("Сидирование БД случайными вакансиями")
+        .RequireAuthorization();
 
     private static async ValueTask<Ok> HandleAsync(
         [AsParameters] Request request,
