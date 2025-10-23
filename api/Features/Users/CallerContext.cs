@@ -5,6 +5,7 @@ using Koworking.Api.Infrastructure.Data;
 using Koworking.Api.Infrastructure.TextIds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
+using StackExchange.Redis;
 
 namespace Koworking.Api.Features.Users;
 
@@ -12,7 +13,7 @@ namespace Koworking.Api.Features.Users;
 public class CallerContext(
     IHttpContextAccessor accessor, 
     HybridCache cache, 
-    DataContext dataContext, 
+    DataContext dataContext,
     Koworker.Mapper mapper)
 {
     private static string? GetSub(ClaimsPrincipal principal) => 

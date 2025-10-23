@@ -11,43 +11,20 @@ namespace Koworking.Api.Features.Users.Actions;
 [Handler, MapGet("/koworkers/me")]
 public static partial class GetMe
 {
-    public record Request
-    {
-        public required HttpContext Context { get; set; }
-    }
+    public record Request;
     
     internal static void CustomizeEndpoint(IEndpointConventionBuilder endpoint) => endpoint
         .WithTags(nameof(Koworker))
-        .WithDescription("Получение данных текущего пользователя");
+        .WithDescription("Получение данных текущего пользователя")
+        .RequireAuthorization();
 
-    private static async ValueTask<Results<UnauthorizedHttpResult, Ok<Koworker.Model>>> HandleAsync(
-        Request request,
-        DataContext dataContext,
-        Koworker.Mapper mapper,
+    private static async ValueTask<Ok<Koworker.Model>> HandleAsync(
+        Request _,
+        CallerContext caller,
         CancellationToken ct)
     {
-        if (request.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) is not { } userId ||
-            Guid.TryParse(userId, out var kcId) is false)
-        {
-            return TypedResults.Unauthorized();
-        }
-
-        var koworker = await dataContext.Koworkers
-            .Where(x => x.KeycloakId == kcId)
-            .Project(mapper.ProjectToModels)
-            .FirstOrDefaultAsync(ct);
-        if (koworker is not null)
-        {
-            return TypedResults.Ok(koworker);
-        }
+        var state = await caller.GetRequiredStateAsync(ct);
         
-        var newKoworker = new Koworker
-        {
-            KeycloakId = kcId,
-        };
-        dataContext.Koworkers.Add(newKoworker);
-        await dataContext.SaveChangesAsync(ct);
-        
-        return TypedResults.Ok(mapper.ToModel(newKoworker));
+        return TypedResults.Ok(state.User);
     }
 }

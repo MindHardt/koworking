@@ -10,9 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using Scalar.AspNetCore;
+using Serilog;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSerilog(logger => logger.ReadFrom.Configuration(builder.Configuration));
 
 builder.Services.AddSingleton(sp =>
     new NpgsqlDataSourceBuilder(sp.GetRequiredService<IConfiguration>().GetConnectionString("Postgres"))
@@ -42,11 +45,13 @@ builder.Services.AddHttpClient();
 builder.Services.AddHybridCache();
 if (builder.Configuration.GetConnectionString("Redis") is { Length: > 0 } redisConnection)
 {
-    var multiplexer = await ConnectionMultiplexer.ConnectAsync(redisConnection);
-    builder.Services.AddSingleton(multiplexer);
+    builder.Services.AddSingleton(sp => ConnectionMultiplexer.Connect(redisConnection, multiplexer =>
+    {
+        multiplexer.LoggerFactory = sp.GetRequiredService<ILoggerFactory>();
+    }));
     builder.Services.AddStackExchangeRedisCache(redis =>
     {
-        redis.ConnectionMultiplexerFactory = () => Task.FromResult<IConnectionMultiplexer>(multiplexer);
+        redis.Configuration = builder.Configuration["Redis:Configuration"];
     });
 }
 else
