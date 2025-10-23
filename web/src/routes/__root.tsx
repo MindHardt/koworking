@@ -6,13 +6,12 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
-import Header from '../components/Header'
-
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import {ReactNode} from "react";
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -43,15 +42,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   shellComponent: RootDocument,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: { children: ReactNode }) {
+  // noinspection HtmlRequiredTitleElement
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Header />
-        {children}
+      <body className='w-screen'>
+        <main className='p-5 mx-auto'>
+          {children}
+        </main>
         <TanStackDevtools
           config={{
             position: 'bottom-right',

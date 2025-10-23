@@ -71,6 +71,7 @@ services:
   # Koworking
   
   api:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: /api/Dockerfile
@@ -81,3 +82,12 @@ services:
       ConnectionStrings__Redis: cache
       Jwt__Authority: http://keycloak:8080/realms/koworking-dev
       S3__ServiceUrl: http://minio:9000
+
+  web:
+    restart: unless-stopped
+    build:
+      context: .
+      target: web
+    environment:
+      BACKEND_URL: http://api:8080
+    ports: [ '3000:3000' ]
