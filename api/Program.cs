@@ -6,6 +6,7 @@ using Koworking.Api.Infrastructure.Data;
 using Koworking.Api.Infrastructure.OpenApi;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
@@ -31,6 +32,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     jwt.Audience = builder.Configuration["Jwt:Audience"];
     jwt.RequireHttpsMetadata = builder.Environment.IsProduction();
 });
+builder.Services.AddDataProtection().PersistKeysToDbContext<DataContext>();
 builder.Services.AddAuthorization();
 if (builder.Environment.IsDevelopment())
 {
