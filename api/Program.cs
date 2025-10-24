@@ -71,7 +71,7 @@ builder.Services.AddOpenApi(openApi =>
 });
 builder.Services.ConfigureHttpJsonOptions(httpJson => httpJson.SerializerOptions.SetDefaults());
 builder.Services.AutoRegisterFromApi();
-builder.Services.AddSingleton<Faker>(_ => new Faker("ru"));
+builder.Services.AddSingleton(_ => new Faker("ru"));
 builder.Services.AddApiHandlers();
 builder.Services.AddCors();
 

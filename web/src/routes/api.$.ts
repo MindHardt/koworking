@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+
 export const Route = createFileRoute('/api/$')({
   server: {
     handlers: {
@@ -6,7 +7,8 @@ export const Route = createFileRoute('/api/$')({
         POST: proxyRequest,
         PUT: proxyRequest,
         DELETE: proxyRequest,
-        PATCH: proxyRequest
+        PATCH: proxyRequest,
+        OPTIONS: proxyRequest,
     }
   }
 })
@@ -25,10 +27,14 @@ async function proxyRequest({ request }: { request: Request }): Promise<Response
         headers: new Headers(request.headers)
     });
     proxiedRequest.headers.delete('Host');
+    console.log('Proxying request', proxiedRequest)
 
     try {
-        return await fetch(proxiedRequest);
-    } catch (error) {
+        const res = await fetch(proxiedRequest);
+        console.log('Proxied response', res);
+        return res;
+    } catch (err) {
+        console.error('There was an error proxying request', { err });
         return Response.json({ error: 'cannot proxy request to backend' }, {
             status: 503
         })

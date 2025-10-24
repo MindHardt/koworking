@@ -7,9 +7,24 @@ import Loading from "@/components/loading.tsx";
 import Card from "@/components/card.tsx";
 import Markdown, {Components} from "react-markdown";
 import {cn} from "@/utils/cn.ts";
+import {getVacanciesById} from "koworking-shared/api";
+import {seo} from "@/utils/seo.ts";
 
 export const Route = createFileRoute('/vacancies/$id')({
-    component: RouteComponent
+    component: RouteComponent,
+    loader: async ({ params }) => ({
+        vacancy: await getVacanciesById({ client, path: { Id: params.id }}).then(x => x.data)
+    }),
+    head: (ctx) => {
+        if (!ctx.loaderData?.vacancy) {
+            return {}
+        }
+
+        const { title, imageUrl } = ctx.loaderData.vacancy;
+        return {
+            meta: seo({ title, image: imageUrl ?? undefined })
+        }
+    }
 })
 
 const components: Components = {
@@ -19,8 +34,10 @@ const components: Components = {
 function RouteComponent() {
 
     const { id } = Route.useParams();
+    const loader = Route.useLoaderData();
     const { data: vacancy, error } = useQuery({
-        ...getVacanciesByIdOptions({ throwOnError: true, client, path: { Id: id } })
+        ...getVacanciesByIdOptions({ throwOnError: true, client, path: { Id: id } }),
+        initialData: loader.vacancy
     })
 
     if (error) {

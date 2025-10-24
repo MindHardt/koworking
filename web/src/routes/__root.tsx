@@ -12,6 +12,7 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import {ReactNode} from "react";
+import {seo} from "@/utils/seo.ts";
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -27,9 +28,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      {
-        title: 'TanStack Start Starter',
-      },
+      ...seo()
     ],
     links: [
       {
