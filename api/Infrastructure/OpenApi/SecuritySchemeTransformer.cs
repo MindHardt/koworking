@@ -17,7 +17,7 @@ public class SecuritySchemeTransformer : IOpenApiDocumentTransformer
             BearerFormat = "jwt",
             Description = "Keycloak Bearer Token"
         };
-        if (ctx.ApplicationServices.GetRequiredService<IHostEnvironment>().IsDevelopment())
+        if (ctx.ApplicationServices.GetRequiredService<IHostEnvironment>().IsProduction() is false)
         {
             doc.Components.SecuritySchemes[FakeAuth.Scheme] = new OpenApiSecurityScheme
             {

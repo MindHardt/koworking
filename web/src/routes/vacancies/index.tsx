@@ -7,7 +7,7 @@ import {client, pagination} from "@/utils/backend.ts";
 import ErrorMessage from "@/components/error-message.tsx";
 import {z} from "zod";
 import InfoMessage from "@/components/info-message.tsx";
-import {useCallback} from "react";
+import {useCallback, useEffect} from "react";
 import Paginator from "@/components/paginator.tsx";
 import {getVacancies} from "koworking-shared/api";
 
@@ -27,6 +27,9 @@ function RouteComponent() {
   const navigation = linkOptions({ from: Route.fullPath });
   const navigate = useNavigate(navigation);
   const { search, page } = Route.useSearch();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
   const { data: res, isFetching, error } = useQuery({
     ...getVacanciesOptions({ client, query: { Search: search, ...pagination(page, 24) }}),
     placeholderData: keepPreviousData,
@@ -38,7 +41,8 @@ function RouteComponent() {
   }, []);
   const getPage = useCallback((page: number) => ({
     ...navigation,
-    search: prev => ({ ...prev, page })
+    search: prev => ({ ...prev, page }),
+    preload: 'intent'
   } satisfies LinkOptions), [])
 
 
