@@ -1,8 +1,10 @@
 using Bogus;
+using ClickHouse.EntityFrameworkCore.Extensions;
 using Koworking.Api;
 using Koworking.Api.Features.Uploads;
 using Koworking.Api.Infrastructure;
 using Koworking.Api.Infrastructure.Data;
+using Koworking.Api.Infrastructure.Data.Analytics;
 using Koworking.Api.Infrastructure.OpenApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -25,6 +27,11 @@ builder.Services.AddDbContext<DataContext>((sp, ef) =>
 {
     ef.UseNpgsql(sp.GetRequiredService<NpgsqlDataSource>());
 });
+builder.Services.AddDbContext<AnalyticsContext>(ef =>
+{
+    ef.UseClickHouse(builder.Configuration.GetConnectionString("ClickHouse"));
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwt =>
 {
     jwt.Authority = builder.Configuration["Jwt:Authority"];
@@ -80,6 +87,8 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     await scope.ServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
+    var ctx = scope.ServiceProvider.GetRequiredService<AnalyticsContext>();
+    await ctx.Database.MigrateAsync();
     if (builder.Environment.IsProduction() is false)
     {
         await scope.ServiceProvider.GetRequiredService<S3FileStorage>().Initialize();

@@ -21,7 +21,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        modelBuilder.ApplyConfigurationsFromContextEntities(GetType());
         base.OnModelCreating(modelBuilder);
     }
 }
