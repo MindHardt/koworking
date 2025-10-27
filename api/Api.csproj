@@ -13,6 +13,7 @@
     <PackageReference Include="AWSSDK.S3" Version="4.0.7.13" />
     <PackageReference Include="Bogus" Version="35.6.4" />
     <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+    <PackageReference Include="EntityFrameworkCore.ClickHouse" Version="2.0.1" />
     <PackageReference Include="Immediate.Apis" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.10" />
@@ -67,6 +68,13 @@
     <Compile Update="Features\Uploads\Upload.Models.cs">
       <DependentUpon>Upload.cs</DependentUpon>
     </Compile>
+    <Compile Update="Features\Visits\SiteVisit.Models.cs">
+      <DependentUpon>SiteVisit.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Data\Analytics\Migrations\" />
   </ItemGroup>
 
 </Project>
