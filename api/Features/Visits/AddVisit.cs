@@ -38,6 +38,7 @@ public static partial class AddVisit
         command.CommandText =
             // lang=clickhouse
             """
+            -- noinspection SqlResolve
             INSERT INTO "site_visits" ("created_at", "utm_campaign", "utm_content", "utm_medium", "utm_source", "utm_term")
             VALUES ({now:String}, {p1:String}, {p2:Nullable(String)}, {p3:String}, {p4:String}, {p5:Nullable(String)});
             """;
