@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BE08A60-44CA-43E3-9994-A52E0BF37A9E}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yml = compose.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
