@@ -3,13 +3,33 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { getKoworkersMe, getVacancies, getVacanciesById, type Options, postDevSeed, postVacancies } from '../sdk.gen';
-import type { GetKoworkersMeData, GetVacanciesByIdData, GetVacanciesData, PostDevSeedData, PostVacanciesData, PostVacanciesResponse } from '../types.gen';
+import { deleteUploadsById, getKoworkersMe, getUploads, getUploadsById, getVacancies, getVacanciesById, type Options, postDevSeed, postUploads, postUploadsMigrate, postVacancies, postVisits } from '../sdk.gen';
+import type { DeleteUploadsByIdData, GetKoworkersMeData, GetUploadsByIdData, GetUploadsData, GetVacanciesByIdData, GetVacanciesData, PostDevSeedData, PostUploadsData, PostUploadsMigrateData, PostUploadsMigrateResponse, PostUploadsResponse, PostVacanciesData, PostVacanciesResponse, PostVisitsData } from '../types.gen';
 
+/**
+ * Сидирование БД случайными вакансиями
+ */
 export const postDevSeedMutation = (options?: Partial<Options<PostDevSeedData>>): UseMutationOptions<unknown, DefaultError, Options<PostDevSeedData>> => {
     const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostDevSeedData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await postDevSeed({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Удаляет загруженный ранее файл
+ */
+export const deleteUploadsByIdMutation = (options?: Partial<Options<DeleteUploadsByIdData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteUploadsByIdData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteUploadsByIdData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteUploadsById({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -53,6 +73,80 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [
         params
     ];
+};
+
+export const getUploadsByIdQueryKey = (options: Options<GetUploadsByIdData>) => createQueryKey('getUploadsById', options);
+
+/**
+ * Загружает файл из хранилища
+ */
+export const getUploadsByIdOptions = (options: Options<GetUploadsByIdData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await getUploadsById({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: getUploadsByIdQueryKey(options)
+    });
+};
+
+export const getUploadsQueryKey = (options?: Options<GetUploadsData>) => createQueryKey('getUploads', options);
+
+/**
+ * Поиск ранее загруженных файлов пользователя
+ */
+export const getUploadsOptions = (options?: Options<GetUploadsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await getUploads({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: getUploadsQueryKey(options)
+    });
+};
+
+/**
+ * Загрузка файла пользователем
+ */
+export const postUploadsMutation = (options?: Partial<Options<PostUploadsData>>): UseMutationOptions<PostUploadsResponse, DefaultError, Options<PostUploadsData>> => {
+    const mutationOptions: UseMutationOptions<PostUploadsResponse, DefaultError, Options<PostUploadsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postUploads({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Загрузка файла из интернета по URL
+ */
+export const postUploadsMigrateMutation = (options?: Partial<Options<PostUploadsMigrateData>>): UseMutationOptions<PostUploadsMigrateResponse, DefaultError, Options<PostUploadsMigrateData>> => {
+    const mutationOptions: UseMutationOptions<PostUploadsMigrateResponse, DefaultError, Options<PostUploadsMigrateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postUploadsMigrate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const getKoworkersMeQueryKey = (options?: Options<GetKoworkersMeData>) => createQueryKey('getKoworkersMe', options);
@@ -130,4 +224,21 @@ export const getVacanciesByIdOptions = (options: Options<GetVacanciesByIdData>) 
         },
         queryKey: getVacanciesByIdQueryKey(options)
     });
+};
+
+/**
+ * Отметка о переходе на сайт
+ */
+export const postVisitsMutation = (options?: Partial<Options<PostVisitsData>>): UseMutationOptions<unknown, DefaultError, Options<PostVisitsData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostVisitsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postVisits({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };

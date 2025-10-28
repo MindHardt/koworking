@@ -13,6 +13,10 @@
   --color-main-950: #072d4a;
 }
 
+.root {
+  isolation: isolate;
+}
+
 body {
   @apply m-0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

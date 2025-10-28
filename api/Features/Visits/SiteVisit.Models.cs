@@ -7,6 +7,9 @@ public partial record SiteVisit
 {
     public record Info
     {
+        [DefaultValue("/vacancies")]
+        public required string Location { get; set; }
+        
         [JsonPropertyName("utm_source"), DefaultValue("koworking")]
         public required string UtmSource { get; set; }
         [JsonPropertyName("utm_medium"), DefaultValue("copy_link")]

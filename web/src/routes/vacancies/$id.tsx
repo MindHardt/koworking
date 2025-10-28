@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import {createFileRoute, useLinkProps} from '@tanstack/react-router'
 import {useQuery} from "@tanstack/react-query";
 import {getVacanciesByIdOptions} from "koworking-shared/api/@tanstack/react-query.gen.ts";
 import {client} from "@/utils/backend.ts";
@@ -9,6 +9,9 @@ import Markdown, {Components} from "react-markdown";
 import {cn} from "@/utils/cn.ts";
 import {getVacanciesById} from "koworking-shared/api";
 import {seo} from "@/utils/seo.ts";
+import ClipboardButton from "@/components/clipboard-button.tsx";
+import {Share} from "lucide-react";
+import {useCallback} from "react";
 
 export const Route = createFileRoute('/vacancies/$id')({
     component: RouteComponent,
@@ -38,7 +41,18 @@ function RouteComponent() {
     const { data: vacancy, error } = useQuery({
         ...getVacanciesByIdOptions({ throwOnError: true, client, path: { Id: id } }),
         initialData: loader.vacancy
-    })
+    });
+    const { href } = useLinkProps({
+        to: '/vacancies/$id',
+        params: { id },
+        search: {
+            utm_source: 'koworking',
+            utm_campaign: 'referral',
+            utm_medium: 'copy_link'
+        }
+    });
+    const getShareUrl = useCallback(() =>
+            new URL(href!, window.location.href).toString(), [href]);
 
     if (error) {
         return <ErrorMessage error={error} />
@@ -51,7 +65,10 @@ function RouteComponent() {
         {vacancy.imageUrl && <Card className='px-0 py-0'>
             <img src={vacancy.imageUrl} alt={vacancy.title} className="w-full rounded-2xl object-fill" />
         </Card>}
-        <h1 className='text-2xl font-semibold'>{vacancy.title}</h1>
+        <div className='flex flex-row gap-1'>
+            <h1 className='text-2xl font-semibold'>{vacancy.title}</h1>
+            <ClipboardButton getText={getShareUrl} icon={<Share />} className='w-24 h-12' />
+        </div>
         <Card>
             <h2 className='text-xl font-semibold'>Описание работы</h2>
             <Markdown components={components}>{vacancy.description}</Markdown>
