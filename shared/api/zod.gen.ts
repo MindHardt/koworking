@@ -3,6 +3,40 @@
 import { z } from 'zod';
 
 /**
+ * AddVisitRequest
+ */
+export const zAddVisitRequest = z.object({
+    location: z.string().default('/vacancies'),
+    utm_source: z.string().default('koworking'),
+    utm_medium: z.string().default('copy_link'),
+    utm_campaign: z.string().default('referral'),
+    utm_term: z.optional(z.union([
+        z.string(),
+        z.null()
+    ])),
+    utm_content: z.optional(z.union([
+        z.string(),
+        z.null()
+    ]))
+});
+
+/**
+ * IFormFile
+ */
+export const zIFormFile = z.string();
+
+/**
+ * KoworkerModel
+ */
+export const zKoworkerModel = z.object({
+    id: z.string(),
+    avatarUrl: z.union([
+        z.string(),
+        z.null()
+    ])
+});
+
+/**
  * PaycheckPeriod
  */
 export const zPaycheckPeriod = z.enum([
@@ -50,10 +84,44 @@ export const zCreateVacancyRequest = z.object({
 });
 
 /**
- * KoworkerModel
+ * UploadScope
  */
-export const zKoworkerModel = z.object({
-    id: z.string()
+export const zUploadScope = z.enum([
+    'Attachment',
+    'Avatar',
+    'Admin'
+]);
+
+/**
+ * MigrateUploadRequest
+ */
+export const zMigrateUploadRequest = z.object({
+    url: z.url(),
+    scope: zUploadScope
+});
+
+/**
+ * UploadModel
+ */
+export const zUploadModel = z.object({
+    id: z.string(),
+    uploaderId: z.string(),
+    hash: z.string(),
+    contentType: z.string(),
+    fileName: z.string(),
+    fileSize: z.coerce.bigint(),
+    uploadTime: z.iso.datetime(),
+    scope: zUploadScope
+});
+
+/**
+ * PaginatedResponseOfUploadModel
+ */
+export const zPaginatedResponseOfUploadModel = z.object({
+    total: z.int(),
+    offset: z.int(),
+    limit: z.int(),
+    data: z.array(zUploadModel)
 });
 
 /**
@@ -85,21 +153,75 @@ export const zPaginatedResponseOfVacancyModel = z.object({
     data: z.array(zVacancyModel)
 });
 
-/**
- * SeedRequest
- */
-export const zSeedRequest = z.object({
-    vacancies: z.optional(z.union([
-        z.int(),
-        z.null()
-    ]))
+export const zPostDevSeedData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        Vacancies: z.optional(z.int())
+    }))
 });
 
-export const zPostDevSeedData = z.object({
-    body: z.optional(zSeedRequest),
+export const zDeleteUploadsByIdData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        Id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGetUploadsByIdData = z.object({
+    body: z.optional(z.never()),
+    path: z.object({
+        Id: z.string()
+    }),
+    query: z.optional(z.never())
+});
+
+export const zGetUploadsData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.object({
+        Scope: z.optional(z.enum([
+            'Attachment',
+            'Avatar',
+            'Admin'
+        ])),
+        Query: z.optional(z.string()),
+        Offset: z.optional(z.int()).default(0),
+        Limit: z.optional(z.int()).default(10)
+    }))
+});
+
+/**
+ * OK
+ */
+export const zGetUploadsResponse = zPaginatedResponseOfUploadModel;
+
+export const zPostUploadsData = z.object({
+    body: z.object({
+        File: zIFormFile
+    }).and(z.object({
+        Scope: zUploadScope
+    })),
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
+
+/**
+ * OK
+ */
+export const zPostUploadsResponse = zUploadModel;
+
+export const zPostUploadsMigrateData = z.object({
+    body: z.optional(zMigrateUploadRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * OK
+ */
+export const zPostUploadsMigrateResponse = zUploadModel;
 
 export const zGetKoworkersMeData = z.object({
     body: z.optional(z.never()),
@@ -150,3 +272,9 @@ export const zGetVacanciesByIdData = z.object({
  * OK
  */
 export const zGetVacanciesByIdResponse = zVacancyModel;
+
+export const zPostVisitsData = z.object({
+    body: z.optional(zAddVisitRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});

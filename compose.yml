@@ -96,6 +96,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Staging
       ConnectionStrings__Postgres: Host=postgres; User Id=koworking; Password=koworking; Database=koworking;
       ConnectionStrings__Redis: cache
+      ConnectionStrings__Clickhouse: Host=clickhouse;Protocol=http;Port=8123;Database=koworking;Username=koworking;Password=koworking
       Jwt__Authority: http://keycloak:8080/realms/koworking-dev
       S3__ServiceUrl: http://minio:9000
 

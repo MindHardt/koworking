@@ -69,7 +69,7 @@ importers:
         version: 2.1.1
       koworking-shared:
         specifier: workspace:^
-        version: link:../shared
+        version: file:shared(react@19.2.0)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@19.2.0)
@@ -2602,6 +2602,9 @@ packages:
 
   knitwork@1.2.0:
     resolution: {integrity: sha512-xYSH7AvuQ6nXkq42x0v5S8/Iry+cfulBz/DJQzhIyESdLD7425jXsPy4vn5cCXU+HhRN2kVw51Vd1K6/By4BQg==}
+
+  koworking-shared@file:shared:
+    resolution: {directory: shared, type: directory}
 
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
@@ -6432,6 +6435,16 @@ snapshots:
   klona@2.0.6: {}
 
   knitwork@1.2.0: {}
+
+  koworking-shared@file:shared(react@19.2.0):
+    dependencies:
+      '@datalust/winston-seq': 3.0.1(winston@3.18.3)
+      '@tanstack/react-query': 5.90.2(react@19.2.0)
+      winston: 3.18.3
+      zod: 4.1.12
+    transitivePeerDependencies:
+      - encoding
+      - react
 
   kuler@2.0.0: {}
 

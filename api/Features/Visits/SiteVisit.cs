@@ -6,6 +6,7 @@ namespace Koworking.Api.Features.Visits;
 
 public partial record SiteVisit
 {
+    public required string Location { get; set; }
     public required string UtmSource { get; set; }
     public required string UtmMedium { get; set; }
     public required string UtmCampaign { get; set; }
