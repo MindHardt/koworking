@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import * as process from "node:process";
 
 export const Route = createFileRoute('/api/$')({
   server: {
@@ -34,8 +35,18 @@ async function proxyRequest({ request }: { request: Request }): Promise<Response
 
     try {
         const res = await fetch(proxiedRequest);
+        if (res.status >= 300 && res.status <= 399) {
+            return res;
+        }
+
+        const body = await res.blob();
+        const proxiedResponse = new Response(body, res);
+
+        proxiedResponse.headers.delete('Content-Encoding');
+        proxiedResponse.headers.set('Content-Length', body.size.toString());
+
         console.log('Proxied response', res);
-        return res;
+        return proxiedResponse;
     } catch (err) {
         console.error('There was an error proxying request', { err });
         return Response.json({ error: 'cannot proxy request to backend' }, {
