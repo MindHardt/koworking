@@ -68,9 +68,6 @@
     <Compile Update="Features\Uploads\Upload.Models.cs">
       <DependentUpon>Upload.cs</DependentUpon>
     </Compile>
-    <Compile Update="Features\Visits\SiteVisit.Models.cs">
-      <DependentUpon>SiteVisit.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

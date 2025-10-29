@@ -12,6 +12,7 @@ public partial record SiteVisit
     public required string UtmCampaign { get; set; }
     public string? UtmTerm { get; set; }
     public string? UtmContent { get; set; }
+    public string? UserAgent { get; set; }
     // https://clickhouse.com/docs/integrations/csharp#supported-data-types
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

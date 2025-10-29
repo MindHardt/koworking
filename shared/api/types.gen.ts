@@ -14,6 +14,7 @@ export type AddVisitRequest = {
     utm_campaign: string;
     utm_term?: string | null;
     utm_content?: string | null;
+    userAgent?: string | null;
 };
 
 /**

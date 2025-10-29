@@ -22,6 +22,7 @@ async function proxyRequest({ request }: { request: Request }): Promise<Response
 
     const proxiedRequest = new Request(requestUrl, {
         ...request,
+        body: request.body,
         method: request.method,
         redirect: 'manual',
         headers: new Headers(request.headers)

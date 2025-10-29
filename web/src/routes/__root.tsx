@@ -13,7 +13,7 @@ import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
 import {ReactNode} from "react";
 import {seo} from "@/utils/seo.ts";
-import {processUtm, zUtmParams} from '@/utils/utm'
+import {useUtmSearch, zUtmParams} from '@/utils/utm'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -38,9 +38,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-  beforeLoad: async ({ search, location: { pathname: location } }) => {
-    await processUtm(search, location);
-  },
   shellComponent: RootDocument,
   validateSearch: zUtmParams.partial()
 });
@@ -50,6 +47,8 @@ function Providers({ children } : { children: ReactNode }) {
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
+  useUtmSearch()
+
   // noinspection HtmlRequiredTitleElement
   return <html lang="en">
   <head>

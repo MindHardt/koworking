@@ -17,7 +17,11 @@ export const zAddVisitRequest = z.object({
     utm_content: z.optional(z.union([
         z.string(),
         z.null()
-    ]))
+    ])),
+    userAgent: z.optional(z.union([
+        z.string().default('scalar'),
+        z.null()
+    ])).default('scalar')
 });
 
 /**
