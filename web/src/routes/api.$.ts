@@ -24,6 +24,8 @@ async function proxyRequest({ request }: { request: Request }): Promise<Response
         ...request,
         body: request.body,
         method: request.method,
+        // @ts-expect-error
+        duplex: 'half',
         redirect: 'manual',
         headers: new Headers(request.headers)
     });
