@@ -12,13 +12,17 @@ public static class FakeAuth
     
     public static IServiceCollection AddFakeAuth(this IServiceCollection services)
     {
-        services.AddAuthentication(Scheme).AddScheme<Options, Handler>(Scheme, configureOptions: null);
+        services.AddAuthentication().AddScheme<Options, Handler>(Scheme, configureOptions: null);
         return services;
     }
 
     private class Options : AuthenticationSchemeOptions;
 
-    private class Handler(IWebHostEnvironment host, IOptionsMonitor<Options> options, ILoggerFactory logger, UrlEncoder encoder) 
+    private class Handler(
+        IWebHostEnvironment host,
+        IOptionsMonitor<Options> options, 
+        ILoggerFactory logger,
+        UrlEncoder encoder) 
         : AuthenticationHandler<Options>(options, logger, encoder)
     {
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -32,7 +36,7 @@ public static class FakeAuth
             if (headers.TryGetValue(UserIdHeader, out var sub) is false ||
                 Guid.TryParse(sub, out var kcId) is false)
             {
-                Logger.LogInformation("No user id header found");
+                Logger.LogDebug("No user id header found");
                 return Task.FromResult(AuthenticateResult.NoResult());
             }
 

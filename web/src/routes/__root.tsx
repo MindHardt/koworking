@@ -14,6 +14,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import {ReactNode} from "react";
 import {seo} from "@/utils/seo.ts";
 import {useUtmSearch, zUtmParams} from '@/utils/utm'
+import {getCurrentUser} from "@/routes/-auth/get-current-user.ts";
+import Header from "@/routes/-layout/header.tsx";
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -39,7 +41,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
-  validateSearch: zUtmParams.partial()
+  validateSearch: zUtmParams.partial(),
+  beforeLoad: async () => ({
+    auth: await getCurrentUser()
+  })
 });
 
 function Providers({ children } : { children: ReactNode }) {
@@ -56,6 +61,7 @@ function RootDocument({ children }: { children: ReactNode }) {
   </head>
   <body className='w-full min-h-screen'>
   <Providers>
+    <Header />
     <main className='p-5 mx-auto root'>
       {children}
     </main>

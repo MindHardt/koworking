@@ -1,0 +1,37 @@
+import {createServerFn} from "@tanstack/react-start";
+import {clearTokens, persistTokens, retrieveTokens, StoredTokens} from "@/routes/-auth/persistence.ts";
+import {TokenResponse, keycloak} from "@/routes/-auth/keycloak.ts";
+
+const refreshRequests = new Map<string, Promise<TokenResponse>>();
+
+export const getAuthTokens = createServerFn({ method: 'GET' }).handler(async () : Promise<Partial<StoredTokens>> => {
+
+    let { access_token, id_token, refresh_token } = retrieveTokens();
+    if (access_token && refresh_token && id_token) {
+        return { access_token, refresh_token, id_token }
+    }
+    if (!refresh_token) {
+        return {};
+    }
+
+    try {
+        let promise = refreshRequests.get(refresh_token);
+        if (!promise) {
+            promise = keycloak.refreshTokens({ refreshToken: refresh_token })
+                .then(res => {
+                    setTimeout(() => refreshRequests.delete(refresh_token), res.expires_in);
+                    return res;
+                });
+            refreshRequests.set(refresh_token, promise);
+        }
+
+        const newTokens = await promise;
+        clearTokens();
+        persistTokens(newTokens);
+        return newTokens;
+    } catch (error) {
+        console.log('There was an error refreshing tokens', error);
+        clearTokens();
+        return {};
+    }
+})
