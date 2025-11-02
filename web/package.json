@@ -25,6 +25,7 @@
     "@tanstack/router-plugin": "^1.132.0",
     "clsx": "^2.1.1",
     "cookie-es": "^2.0.0",
+    "hono": "^4.10.4",
     "koworking-shared": "workspace:^",
     "lucide-react": "^0.544.0",
     "node-fetch": "^3.3.2",

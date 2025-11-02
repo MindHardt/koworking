@@ -6,7 +6,9 @@ import {getAuthTokens} from "@/routes/-auth/get-auth-tokens.ts";
 const client = createClient({
     baseUrl: process.env?.BACKEND_URL ?? '/api',
 });
-client.interceptors.request.use(appendAccessToken);
+if (import.meta.env.SSR) {
+    client.interceptors.request.use(appendAccessToken);
+}
 
 async function appendAccessToken(request: Request) {
     const { access_token } = await getAuthTokens();
