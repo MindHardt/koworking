@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VacanciesIndexRouteImport } from './routes/vacancies/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as VacanciesIdRouteImport } from './routes/vacancies/$id'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
+import { Route as ApiAuthSignoutRouteImport } from './routes/api.auth.signout'
 import { Route as ApiAuthSigninRouteImport } from './routes/api.auth.signin'
 import { Route as ApiAuthCallbackRouteImport } from './routes/api.auth.callback'
 
@@ -26,6 +28,11 @@ const VacanciesIndexRoute = VacanciesIndexRouteImport.update({
   path: '/vacancies/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VacanciesIdRoute = VacanciesIdRouteImport.update({
   id: '/vacancies/$id',
   path: '/vacancies/$id',
@@ -34,6 +41,11 @@ const VacanciesIdRoute = VacanciesIdRouteImport.update({
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: '/api/$',
   path: '/api/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSignoutRoute = ApiAuthSignoutRouteImport.update({
+  id: '/api/auth/signout',
+  path: '/api/auth/signout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSigninRoute = ApiAuthSigninRouteImport.update({
@@ -51,26 +63,32 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/vacancies/$id': typeof VacanciesIdRoute
+  '/profile': typeof ProfileIndexRoute
   '/vacancies': typeof VacanciesIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/signin': typeof ApiAuthSigninRoute
+  '/api/auth/signout': typeof ApiAuthSignoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/vacancies/$id': typeof VacanciesIdRoute
+  '/profile': typeof ProfileIndexRoute
   '/vacancies': typeof VacanciesIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/signin': typeof ApiAuthSigninRoute
+  '/api/auth/signout': typeof ApiAuthSignoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/$': typeof ApiSplatRoute
   '/vacancies/$id': typeof VacanciesIdRoute
+  '/profile/': typeof ProfileIndexRoute
   '/vacancies/': typeof VacanciesIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/signin': typeof ApiAuthSigninRoute
+  '/api/auth/signout': typeof ApiAuthSignoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -78,34 +96,42 @@ export interface FileRouteTypes {
     | '/'
     | '/api/$'
     | '/vacancies/$id'
+    | '/profile'
     | '/vacancies'
     | '/api/auth/callback'
     | '/api/auth/signin'
+    | '/api/auth/signout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/$'
     | '/vacancies/$id'
+    | '/profile'
     | '/vacancies'
     | '/api/auth/callback'
     | '/api/auth/signin'
+    | '/api/auth/signout'
   id:
     | '__root__'
     | '/'
     | '/api/$'
     | '/vacancies/$id'
+    | '/profile/'
     | '/vacancies/'
     | '/api/auth/callback'
     | '/api/auth/signin'
+    | '/api/auth/signout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiSplatRoute: typeof ApiSplatRoute
   VacanciesIdRoute: typeof VacanciesIdRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   VacanciesIndexRoute: typeof VacanciesIndexRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   ApiAuthSigninRoute: typeof ApiAuthSigninRoute
+  ApiAuthSignoutRoute: typeof ApiAuthSignoutRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -124,6 +150,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VacanciesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vacancies/$id': {
       id: '/vacancies/$id'
       path: '/vacancies/$id'
@@ -136,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: '/api/$'
       fullPath: '/api/$'
       preLoaderRoute: typeof ApiSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/signout': {
+      id: '/api/auth/signout'
+      path: '/api/auth/signout'
+      fullPath: '/api/auth/signout'
+      preLoaderRoute: typeof ApiAuthSignoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/signin': {
@@ -159,9 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiSplatRoute: ApiSplatRoute,
   VacanciesIdRoute: VacanciesIdRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   VacanciesIndexRoute: VacanciesIndexRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   ApiAuthSigninRoute: ApiAuthSigninRoute,
+  ApiAuthSignoutRoute: ApiAuthSignoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

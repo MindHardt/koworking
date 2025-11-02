@@ -13,7 +13,7 @@ export default function Header() {
     });
     const navigate = useNavigate();
     const redirectToLogin = useCallback(async () => {
-        await navigate({ to: '/api/auth/signin', search: { returnUrl: window.location.href }})
+        await navigate({ to: '/api/auth/signin', reloadDocument: true, search: { returnUrl: window.location.href }})
     }, []);
 
     return <header className='bg-main-700 shadow-md w-full h-16 p-2 flex flex-row gap-2 justify-between'>

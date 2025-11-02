@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     jwt.Authority = builder.Configuration["Jwt:Authority"];
     jwt.Audience = builder.Configuration["Jwt:Audience"];
+    jwt.TokenValidationParameters.ValidIssuer = builder.Configuration["Jwt:Issuer"];
     jwt.RequireHttpsMetadata = builder.Environment.IsProduction();
 });
 builder.Services.AddDataProtection().PersistKeysToDbContext<DataContext>();

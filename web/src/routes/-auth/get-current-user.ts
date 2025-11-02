@@ -37,8 +37,12 @@ export const getCurrentUser = createServerFn({ method: 'GET' })
 
         const meResponse = await getKoworkersMe({ client })
         if (!meResponse.data) {
+            if (meResponse.response.status === 401) {
+                return null;
+            }
+
             const error = meResponse.error;
-            console.error('There was en error fetching user info from backend', error);
+            console.error('There was en error fetching user info from backend', meResponse.response.status, error);
             throw error;
         }
         const { id, avatarUrl } = meResponse.data;
