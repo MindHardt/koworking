@@ -107,6 +107,10 @@ services:
     build:
       context: .
       target: web
+      args:
+        VITE_KEYCLOAK_URL: http://localhost:9002/realms/koworking-dev
     environment:
       BACKEND_URL: http://api:8080
+      KEYCLOAK_URL: http://keycloak:8080/realms/koworking-dev
+      KEYCLOAK_CLIENT_ID: koworking-web
     ports: [ '3000:3000' ]

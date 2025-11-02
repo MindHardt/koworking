@@ -2,6 +2,8 @@ FROM node:24-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
+ARG VITE_KEYCLOAK_URL
+
 RUN corepack enable
 
 FROM base AS build
