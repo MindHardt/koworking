@@ -12,6 +12,7 @@ import {seo} from "@/utils/seo.ts";
 import ClipboardButton from "@/components/clipboard-button.tsx";
 import {Share} from "lucide-react";
 import {useCallback} from "react";
+import currentUserOptions from "@/routes/-auth/current-user-options.ts";
 
 export const Route = createFileRoute('/vacancies/$id')({
     component: RouteComponent,
@@ -36,6 +37,9 @@ const components: Components = {
 }
 function RouteComponent() {
 
+    const { data: user } = useQuery({
+        ...currentUserOptions()
+    });
     const { id } = Route.useParams();
     const loader = Route.useLoaderData();
     const { data: vacancy, error } = useQuery({
@@ -48,7 +52,8 @@ function RouteComponent() {
         search: {
             utm_source: 'koworking',
             utm_campaign: 'referral',
-            utm_medium: 'copy_link'
+            utm_medium: 'copy_link',
+            utm_content: user?.id ? `user_${user.id}` : undefined
         }
     });
     const getShareUrl = useCallback(() =>

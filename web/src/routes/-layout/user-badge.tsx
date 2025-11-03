@@ -1,5 +1,4 @@
 import {User} from "@/routes/-auth/get-current-user.ts";
-import Button from "@/components/button.tsx";
 import UserAvatar from "@/components/user-avatar.tsx";
 import {Menu} from "@base-ui-components/react";
 import {Link, useNavigate} from "@tanstack/react-router";
@@ -16,13 +15,15 @@ export default function UserBadge({ user } : {
     }, [])
 
     return <Menu.Root>
-        <Menu.Trigger className='flex flex-row gap-1'>
+        <Menu.Trigger className='flex flex-row gap-1' >
             <UserAvatar
                 user={user}
                 className='size-12 hover:filter-[brightness(0.8)] transition-[filter]'
                 imageProps={{ className: 'h-full rounded-4xl' }}
                 fallbackProps={{ className: 'block h-full rounded-4xl bg-main-200 text-main-800 flex justify-center items-center text-xl font-bold' }} />
-            <Button className='h-full w-32 hidden md:inline'>{user.name}</Button>
+            <span className='hidden md:flex h-12 w-32 bg-main-500 hover:bg-main-600 rounded-4xl items-center justify-center text-white text-lg font-semibold'>
+                {user.name}
+            </span>
         </Menu.Trigger>
         <Menu.Portal>
             <Menu.Positioner>
