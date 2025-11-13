@@ -5,7 +5,7 @@
   --color-main-200: oklch(0.845 0.078 255.11);
   --color-main-300: oklch(0.756 0.13 250.5);
   --color-main-400: oklch(0.679 0.171 245.03);
-  --color-main-500: oklch(0.599 0.151 245.03);
+  --color-main-500: oklch(0.599 0.151 245.03); /* #0086D3 */
   --color-main-600: oklch(0.506 0.127 244.86);
   --color-main-700: oklch(0.413 0.104 244.83);
   --color-main-800: oklch(0.326 0.082 245.09);
