@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="compose.yml" />
     <File Path="README.md" />
+    <File Path=".github\workflows\deploy.yml" />
   </Folder>
   <Project Path="api\src\Api.csproj" Type="Classic C#" />
   <Project Path="api\tests\Api.Tests.csproj" Type="Classic C#" />
