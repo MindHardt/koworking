@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-beta.4",
+    "@fontsource/open-sans": "^5.2.7",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/nitro-v2-vite-plugin": "^1.132.31",
     "@tanstack/react-devtools": "^0.7.0",

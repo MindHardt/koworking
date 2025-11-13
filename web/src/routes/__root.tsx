@@ -8,6 +8,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
+import '@fontsource/open-sans/500.css';
 import '@/styles.css';
 
 import type { QueryClient } from '@tanstack/react-query'

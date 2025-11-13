@@ -37,6 +37,9 @@ importers:
       '@base-ui-components/react':
         specifier: 1.0.0-beta.4
         version: 1.0.0-beta.4(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@fontsource/open-sans':
+        specifier: ^5.2.7
+        version: 5.2.7
       '@tailwindcss/vite':
         specifier: ^4.0.6
         version: 4.1.14(vite@7.1.12(@types/node@22.18.10)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
@@ -757,6 +760,9 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@fontsource/open-sans@5.2.7':
+    resolution: {integrity: sha512-8yfgDYjE5O0vmTPdrcjV35y4yMnctsokmi9gN49Gcsr0sjzkMkR97AnKDe6OqZh2SFkYlR28fxOvi21bYEgMSw==}
 
   '@hey-api/codegen-core@0.1.0':
     resolution: {integrity: sha512-7B6B9Zuw4uQWoG5YwAwNC+UTz6ErAujqaQrJuMu/OgPkUHq+hl6zdKKi2MX/399vPYilo0IGBxQHmY1UfmTHsw==}
@@ -4530,6 +4536,8 @@ snapshots:
       react-dom: 19.2.0(react@19.2.0)
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@fontsource/open-sans@5.2.7': {}
 
   '@hey-api/codegen-core@0.1.0(typescript@5.9.3)':
     dependencies:
