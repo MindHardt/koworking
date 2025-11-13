@@ -14,6 +14,7 @@ public static class JsonDefaults
         options.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         options.PropertyNameCaseInsensitive = true;
         options.Converters.Add(new JsonStringEnumConverter());
+        options.Converters.Add(new OptionalJsonConverterFactory());
     }
 
     public static JsonSerializerOptions WithDefaults(this JsonSerializerOptions options)

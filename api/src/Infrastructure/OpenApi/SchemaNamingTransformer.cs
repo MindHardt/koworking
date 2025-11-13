@@ -29,6 +29,12 @@ public class SchemaNamingTransformer : IOpenApiSchemaTransformer
             return null;
         }
         
+        var optional = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Optional<>);
+        if (optional)
+        {
+            return null;
+        }
+        
         var collectionType = type.IsGenericType && type
             .GetInterfaces()
             .Where(x => x.IsGenericType)

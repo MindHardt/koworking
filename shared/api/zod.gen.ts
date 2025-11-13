@@ -25,11 +25,6 @@ export const zAddVisitRequest = z.object({
 });
 
 /**
- * IFormFile
- */
-export const zIFormFile = z.string();
-
-/**
  * KoworkerModel
  */
 export const zKoworkerModel = z.object({
@@ -85,6 +80,13 @@ export const zCreateVacancyRequest = z.object({
         z.null()
     ]),
     paycheck: zPaycheck
+});
+
+/**
+ * UpdateMeRequest
+ */
+export const zUpdateMeRequest = z.object({
+    avatarUrl: z.optional(z.string())
 });
 
 /**
@@ -203,7 +205,7 @@ export const zGetUploadsResponse = zPaginatedResponseOfUploadModel;
 
 export const zPostUploadsData = z.object({
     body: z.object({
-        File: zIFormFile
+        File: z.string()
     }).and(z.object({
         Scope: zUploadScope
     })),
@@ -237,6 +239,17 @@ export const zGetKoworkersMeData = z.object({
  * OK
  */
 export const zGetKoworkersMeResponse = zKoworkerModel;
+
+export const zPatchKoworkersMeData = z.object({
+    body: z.optional(zUpdateMeRequest),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * OK
+ */
+export const zPatchKoworkersMeResponse = zKoworkerModel;
 
 export const zGetVacanciesData = z.object({
     body: z.optional(z.never()),

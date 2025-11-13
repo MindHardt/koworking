@@ -12,7 +12,7 @@ public static class FakeAuth
     
     public static IServiceCollection AddFakeAuth(this IServiceCollection services)
     {
-        services.AddAuthentication().AddScheme<Options, Handler>(Scheme, configureOptions: null);
+        services.AddAuthentication(Scheme).AddScheme<Options, Handler>(Scheme, configureOptions: null);
         return services;
     }
 

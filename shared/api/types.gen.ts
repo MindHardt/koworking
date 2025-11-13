@@ -31,11 +31,6 @@ export type CreateVacancyRequest = {
 };
 
 /**
- * IFormFile
- */
-export type IFormFile = Blob | File;
-
-/**
  * KoworkerModel
  */
 export type KoworkerModel = {
@@ -89,6 +84,13 @@ export type PaycheckPeriod = 'Hourly' | 'Daily' | 'Weekly' | 'Monthly' | 'Yearly
  * PaycheckType
  */
 export type PaycheckType = 'Net' | 'Gross';
+
+/**
+ * UpdateMeRequest
+ */
+export type UpdateMeRequest = {
+    avatarUrl?: string;
+};
 
 /**
  * UploadModel
@@ -209,7 +211,10 @@ export type GetUploadsResponse = GetUploadsResponses[keyof GetUploadsResponses];
 
 export type PostUploadsData = {
     body: {
-        File: IFormFile;
+        /**
+         * IFormFile
+         */
+        File: Blob | File;
     } & {
         Scope: UploadScope;
     };
@@ -272,6 +277,22 @@ export type GetKoworkersMeResponses = {
 };
 
 export type GetKoworkersMeResponse = GetKoworkersMeResponses[keyof GetKoworkersMeResponses];
+
+export type PatchKoworkersMeData = {
+    body?: UpdateMeRequest;
+    path?: never;
+    query?: never;
+    url: '/koworkers/me';
+};
+
+export type PatchKoworkersMeResponses = {
+    /**
+     * OK
+     */
+    200: KoworkerModel;
+};
+
+export type PatchKoworkersMeResponse = PatchKoworkersMeResponses[keyof PatchKoworkersMeResponses];
 
 export type GetVacanciesData = {
     body?: never;

@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { deleteUploadsById, getKoworkersMe, getUploads, getUploadsById, getVacancies, getVacanciesById, type Options, postDevSeed, postUploads, postUploadsMigrate, postVacancies, postVisits } from '../sdk.gen';
-import type { DeleteUploadsByIdData, GetKoworkersMeData, GetUploadsByIdData, GetUploadsData, GetVacanciesByIdData, GetVacanciesData, PostDevSeedData, PostUploadsData, PostUploadsMigrateData, PostUploadsMigrateResponse, PostUploadsResponse, PostVacanciesData, PostVacanciesResponse, PostVisitsData } from '../types.gen';
+import { deleteUploadsById, getKoworkersMe, getUploads, getUploadsById, getVacancies, getVacanciesById, type Options, patchKoworkersMe, postDevSeed, postUploads, postUploadsMigrate, postVacancies, postVisits } from '../sdk.gen';
+import type { DeleteUploadsByIdData, GetKoworkersMeData, GetKoworkersMeResponse, GetUploadsByIdData, GetUploadsData, GetUploadsResponse, GetVacanciesByIdData, GetVacanciesByIdResponse, GetVacanciesData, GetVacanciesResponse, PatchKoworkersMeData, PatchKoworkersMeResponse, PostDevSeedData, PostUploadsData, PostUploadsMigrateData, PostUploadsMigrateResponse, PostUploadsResponse, PostVacanciesData, PostVacanciesResponse, PostVisitsData } from '../types.gen';
 
 /**
  * Сидирование БД случайными вакансиями
@@ -75,45 +75,41 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     ];
 };
 
-export const getUploadsByIdQueryKey = (options: Options<GetUploadsByIdData>) => createQueryKey('getUploadsById', options);
+export const getUploadsByIdQueryKey = (options: Options<GetUploadsByIdData>) => createQueryKey("getUploadsById", options);
 
 /**
  * Загружает файл из хранилища
  */
-export const getUploadsByIdOptions = (options: Options<GetUploadsByIdData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getUploadsById({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: getUploadsByIdQueryKey(options)
-    });
-};
+export const getUploadsByIdOptions = (options: Options<GetUploadsByIdData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getUploadsByIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getUploadsById({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getUploadsByIdQueryKey(options)
+});
 
-export const getUploadsQueryKey = (options?: Options<GetUploadsData>) => createQueryKey('getUploads', options);
+export const getUploadsQueryKey = (options?: Options<GetUploadsData>) => createQueryKey("getUploads", options);
 
 /**
  * Поиск ранее загруженных файлов пользователя
  */
-export const getUploadsOptions = (options?: Options<GetUploadsData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getUploads({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: getUploadsQueryKey(options)
-    });
-};
+export const getUploadsOptions = (options?: Options<GetUploadsData>) => queryOptions<GetUploadsResponse, DefaultError, GetUploadsResponse, ReturnType<typeof getUploadsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getUploads({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getUploadsQueryKey(options)
+});
 
 /**
  * Загрузка файла пользователем
@@ -149,45 +145,58 @@ export const postUploadsMigrateMutation = (options?: Partial<Options<PostUploads
     return mutationOptions;
 };
 
-export const getKoworkersMeQueryKey = (options?: Options<GetKoworkersMeData>) => createQueryKey('getKoworkersMe', options);
+export const getKoworkersMeQueryKey = (options?: Options<GetKoworkersMeData>) => createQueryKey("getKoworkersMe", options);
 
 /**
  * Получение данных текущего пользователя
  */
-export const getKoworkersMeOptions = (options?: Options<GetKoworkersMeData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getKoworkersMe({
+export const getKoworkersMeOptions = (options?: Options<GetKoworkersMeData>) => queryOptions<GetKoworkersMeResponse, DefaultError, GetKoworkersMeResponse, ReturnType<typeof getKoworkersMeQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getKoworkersMe({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getKoworkersMeQueryKey(options)
+});
+
+/**
+ * Обновление текущего пользователя
+ */
+export const patchKoworkersMeMutation = (options?: Partial<Options<PatchKoworkersMeData>>): UseMutationOptions<PatchKoworkersMeResponse, DefaultError, Options<PatchKoworkersMeData>> => {
+    const mutationOptions: UseMutationOptions<PatchKoworkersMeResponse, DefaultError, Options<PatchKoworkersMeData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await patchKoworkersMe({
                 ...options,
-                ...queryKey[0],
-                signal,
+                ...fnOptions,
                 throwOnError: true
             });
             return data;
-        },
-        queryKey: getKoworkersMeQueryKey(options)
-    });
+        }
+    };
+    return mutationOptions;
 };
 
-export const getVacanciesQueryKey = (options?: Options<GetVacanciesData>) => createQueryKey('getVacancies', options);
+export const getVacanciesQueryKey = (options?: Options<GetVacanciesData>) => createQueryKey("getVacancies", options);
 
 /**
  * Получение списка вакансий с поиском
  */
-export const getVacanciesOptions = (options?: Options<GetVacanciesData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getVacancies({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: getVacanciesQueryKey(options)
-    });
-};
+export const getVacanciesOptions = (options?: Options<GetVacanciesData>) => queryOptions<GetVacanciesResponse, DefaultError, GetVacanciesResponse, ReturnType<typeof getVacanciesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getVacancies({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getVacanciesQueryKey(options)
+});
 
 /**
  * Создание новой вакансии
@@ -206,25 +215,23 @@ export const postVacanciesMutation = (options?: Partial<Options<PostVacanciesDat
     return mutationOptions;
 };
 
-export const getVacanciesByIdQueryKey = (options: Options<GetVacanciesByIdData>) => createQueryKey('getVacanciesById', options);
+export const getVacanciesByIdQueryKey = (options: Options<GetVacanciesByIdData>) => createQueryKey("getVacanciesById", options);
 
 /**
  * Получение конкретной вакансии
  */
-export const getVacanciesByIdOptions = (options: Options<GetVacanciesByIdData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await getVacanciesById({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true
-            });
-            return data;
-        },
-        queryKey: getVacanciesByIdQueryKey(options)
-    });
-};
+export const getVacanciesByIdOptions = (options: Options<GetVacanciesByIdData>) => queryOptions<GetVacanciesByIdResponse, DefaultError, GetVacanciesByIdResponse, ReturnType<typeof getVacanciesByIdQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getVacanciesById({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getVacanciesByIdQueryKey(options)
+});
 
 /**
  * Отметка о переходе на сайт

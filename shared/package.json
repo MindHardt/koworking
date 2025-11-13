@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --skipLibCheck",
-    "openapi": "pnpx @hey-api/openapi-ts"
+    "openapi": "pnpx @hey-api/openapi-ts@latest"
   },
   "keywords": [],
   "author": "",

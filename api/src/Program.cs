@@ -72,6 +72,7 @@ builder.Services.AddOpenApi(openApi =>
 {
     openApi.AddSchemaTransformer<SchemaNamingTransformer>();
     openApi.AddSchemaTransformer<ValueObjectTransformer>();
+    openApi.AddSchemaTransformer<OptionalTransformer>();
     openApi.AddDocumentTransformer<SecuritySchemeTransformer>();
     openApi.AddDocumentTransformer<SecuritySchemeTransformer>();
     openApi.AddDocumentTransformer<ServerUrlTransformer>();

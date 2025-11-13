@@ -2,7 +2,7 @@
 
 import { type Client, formDataBodySerializer, type Options as Options2, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteUploadsByIdData, DeleteUploadsByIdErrors, DeleteUploadsByIdResponses, GetKoworkersMeData, GetKoworkersMeResponses, GetUploadsByIdData, GetUploadsByIdErrors, GetUploadsData, GetUploadsResponses, GetVacanciesByIdData, GetVacanciesByIdErrors, GetVacanciesByIdResponses, GetVacanciesData, GetVacanciesResponses, PostDevSeedData, PostDevSeedResponses, PostUploadsData, PostUploadsErrors, PostUploadsMigrateData, PostUploadsMigrateErrors, PostUploadsMigrateResponses, PostUploadsResponses, PostVacanciesData, PostVacanciesResponses, PostVisitsData, PostVisitsResponses } from './types.gen';
+import type { DeleteUploadsByIdData, DeleteUploadsByIdErrors, DeleteUploadsByIdResponses, GetKoworkersMeData, GetKoworkersMeResponses, GetUploadsByIdData, GetUploadsByIdErrors, GetUploadsData, GetUploadsResponses, GetVacanciesByIdData, GetVacanciesByIdErrors, GetVacanciesByIdResponses, GetVacanciesData, GetVacanciesResponses, PatchKoworkersMeData, PatchKoworkersMeResponses, PostDevSeedData, PostDevSeedResponses, PostUploadsData, PostUploadsErrors, PostUploadsMigrateData, PostUploadsMigrateErrors, PostUploadsMigrateResponses, PostUploadsResponses, PostVacanciesData, PostVacanciesResponses, PostVisitsData, PostVisitsResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -94,6 +94,20 @@ export const getKoworkersMe = <ThrowOnError extends boolean = false>(options?: O
     return (options?.client ?? client).get<GetKoworkersMeResponses, unknown, ThrowOnError>({
         url: '/koworkers/me',
         ...options
+    });
+};
+
+/**
+ * Обновление текущего пользователя
+ */
+export const patchKoworkersMe = <ThrowOnError extends boolean = false>(options?: Options<PatchKoworkersMeData, ThrowOnError>) => {
+    return (options?.client ?? client).patch<PatchKoworkersMeResponses, unknown, ThrowOnError>({
+        url: '/koworkers/me',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+        }
     });
 };
 
