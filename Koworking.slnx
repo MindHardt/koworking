@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yml" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="api\src\Api.csproj" Type="Classic C#" />
+  <Project Path="api\tests\Api.Tests.csproj" Type="Classic C#" />
+</Solution>
