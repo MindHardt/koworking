@@ -8,7 +8,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
-import appCss from '../styles.css?url'
+import '@/styles.css';
 
 import type { QueryClient } from '@tanstack/react-query'
 import {ReactNode} from "react";
@@ -32,13 +32,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo()
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
+    ]
   }),
   shellComponent: RootDocument,
   validateSearch: zUtmParams.partial(),

@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddDataProtection().PersistKeysToDbContext<DataContext>();
 builder.Services.AddAuthorization();
-if (builder.Environment.IsProduction() is false)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddFakeAuth();
 }

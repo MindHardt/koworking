@@ -3,6 +3,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 ARG VITE_KEYCLOAK_URL
+ARG NODE_ENV=production
 
 RUN corepack enable
 
@@ -11,7 +12,7 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run -r --filter=koworking-shared build --outDir /prod/shared
-RUN pnpm run -r --filter=!koworking-shared build
+RUN pnpm run -r --filter=koworking-web build --mode $NODE_ENV
 RUN pnpm deploy --filter=koworking-web --prod /prod/web
 
 FROM base AS web

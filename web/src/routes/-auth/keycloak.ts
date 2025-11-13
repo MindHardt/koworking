@@ -55,7 +55,7 @@ export const keycloak : IdentityProvider = {
         return url;
     },
     exchangeTokens: async (params) => {
-        const url = new URL(keycloakPublicUrl + '/protocol/openid-connect/token');
+        const url = new URL(keycloakUrl + '/protocol/openid-connect/token');
         const redirect_uri = params.redirectUri instanceof URL
             ? params.redirectUri.href
             : params.redirectUri
@@ -77,7 +77,7 @@ export const keycloak : IdentityProvider = {
         return await res.json().then(zTokenResponse.parse);
     },
     refreshTokens: async (params) => {
-        const url = new URL(keycloakPublicUrl + '/protocol/openid-connect/token');
+        const url = new URL(keycloakUrl + '/protocol/openid-connect/token');
         const res = await fetch(url, {
             method: 'POST',
             headers,
@@ -93,7 +93,7 @@ export const keycloak : IdentityProvider = {
         return await res.json().then(zTokenResponse.parse);
     },
     revokeTokens: async (params) => {
-        const url = new URL(keycloakPublicUrl + '/protocol/openid-connect/logout');
+        const url = new URL(keycloakUrl + '/protocol/openid-connect/logout');
         const res = await fetch(url, {
             method: 'POST',
             headers,

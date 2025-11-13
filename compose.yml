@@ -106,10 +106,12 @@ services:
     restart: unless-stopped
     build:
       context: .
-      target: web
+      dockerfile: ./web/Dockerfile
       args:
         VITE_KEYCLOAK_URL: http://localhost:9002/realms/koworking-dev
+        NODE_ENV: staging
     environment:
+      NODE_ENV: development
       BACKEND_URL: http://api:8080
       KEYCLOAK_URL: http://keycloak:8080/realms/koworking-dev
       KEYCLOAK_CLIENT_ID: koworking-web
