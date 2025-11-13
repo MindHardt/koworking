@@ -18,6 +18,5 @@ RUN pnpm deploy --filter=koworking-web --prod /prod/web
 FROM base AS web
 COPY --from=build /prod/web /prod/web
 COPY --from=build /prod/shared/ /prod/web/node_modules/seadox-shared
-WORKDIR /prod/web
 EXPOSE 3000
-CMD [ "node", ".output/server/index.mjs" ]
+CMD [ "node", "/prod/web/.output/server/index.mjs" ]
