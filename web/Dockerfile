@@ -18,6 +18,5 @@ RUN pnpm deploy --filter=koworking-web --prod /prod/web
 FROM base AS web
 COPY --from=build /prod/web /prod/web
 COPY --from=build /prod/shared/ /prod/web/node_modules/koworking-shared
-WORKDIR /prod/web
 EXPOSE 3000
-ENTRYPOINT [ "node", ".output/server/index.mjs" ]
+ENTRYPOINT [ "node", "/prod/web/.output/server/index.mjs" ]
