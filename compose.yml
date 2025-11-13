@@ -90,7 +90,7 @@ services:
     restart: unless-stopped
     build:
       context: .
-      dockerfile: /api/Dockerfile
+      dockerfile: /api/src/Dockerfile
     ports: [ "8080:8080" ]
     environment:
       ASPNETCORE_ENVIRONMENT: Staging
