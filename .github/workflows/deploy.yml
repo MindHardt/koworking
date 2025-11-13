@@ -29,6 +29,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          context: .
           file: ./api/src/Dockerfile
           tags: ${{ secrets.REGISTRY }}/koworking/api:latest
 
@@ -36,9 +37,10 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          context: .
           file: ./web/Dockerfile
           build-args: |
-            VITE_NODE_ENV=production
+            NODE_ENV=production
             VITE_KEYCLOAK_URL=https://kckwr.un1ver5e.ru/realms/koworking
           tags: ${{ secrets.REGISTRY }}/koworking/web:latest
 

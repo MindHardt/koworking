@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router';
-import * as process from "node:process";
 import {Hono} from "hono";
 import {proxy} from "hono/proxy";
 import {handle} from "hono/vercel";
