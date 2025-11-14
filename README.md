@@ -9,14 +9,15 @@
 - [ ] отклик на вакансии
 - [ ] чат в приложении
 
-# Сборка образов
-
-## web
+# Начало разработки
+Чтобы поднять все нужные сервисы используйте
 ```shell
-docker build -t un1ver5e/koworking-web --push --target web --build-arg VITE_KEYCLOAK_URL=https://kckwr.un1ver5e.ru/realms/koworking .
+docker compose up
 ```
 
-## api
-```shell
-docker build -t un1ver5e/koworking-api -f .\api\Dockerfile --push .
-```
+Если вы поднимаете сервисы впервые на этой 
+машине то импортируйте реалм по 
+[инструкции](./keycloak/README.md).
+
+Далее остановите контейнер с которым будете 
+работать и разверните его локальную копию. Шикарно!
