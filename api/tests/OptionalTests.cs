@@ -6,7 +6,7 @@ namespace Api.Tests;
 
 public class OptionalTests
 {
-    private readonly static JsonSerializerOptions JsonOpts = JsonDefaults.Options;
+    private static readonly JsonSerializerOptions JsonOpts = JsonDefaults.Options;
     public record TestClass
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

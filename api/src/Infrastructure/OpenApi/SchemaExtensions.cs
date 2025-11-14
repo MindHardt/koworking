@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Koworking.Api.Infrastructure.OpenApi;
 
-public static class OptionalExtensions
+public static class SchemaExtensions
 {
     public static void CopyTo(this OpenApiSchema source, OpenApiSchema target)
     {
