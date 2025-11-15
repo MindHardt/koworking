@@ -5,6 +5,7 @@ using Koworking.Api.Infrastructure.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace Koworking.Api.Features.Users.Actions;
 
@@ -26,6 +27,7 @@ public static partial class UpdateMe
         CallerContext caller,
         DataContext dataContext,
         Koworker.Mapper mapper,
+        HybridCache cache,
         CancellationToken ct)
     {
         var userId = await caller.GetRequiredUserId(ct);
@@ -34,6 +36,7 @@ public static partial class UpdateMe
         koworker.AvatarUrl = request.AvatarUrl.Or(koworker.AvatarUrl);
         
         await dataContext.SaveChangesAsync(ct);
+        await cache.RemoveAsync(koworker.GetCacheKey(), ct);
 
         return TypedResults.Ok(mapper.ToModel(koworker));
     }

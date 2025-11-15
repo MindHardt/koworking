@@ -1,6 +1,7 @@
 import {createClient} from "koworking-shared/api/client";
 import * as process from "node:process";
 import {getAuthTokens} from "@/routes/-auth/get-auth-tokens.ts";
+import {UploadModel} from "koworking-shared/api";
 
 
 const client = createClient({
@@ -23,4 +24,6 @@ const pagination = (page: number, pageSize = 10)=> ({
     Offset: (page - 1) * pageSize
 });
 
-export { client, pagination };
+const uploadUrl = (upload: UploadModel) => '/api/uploads/' + upload.id;
+
+export { client, pagination, uploadUrl };

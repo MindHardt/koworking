@@ -19,12 +19,19 @@ export const Route = createFileRoute('/api/$')({
 
 const backendUrl = new URL(process.env.BACKEND_URL!);
 const proxyServer = new Hono();
-proxyServer.all('*', async (ctx) => {
-    const reqUrl = new URL(ctx.req.url);
-    reqUrl.protocol = backendUrl.protocol;
-    reqUrl.host = backendUrl.host;
+proxyServer.all('*', async ({ req }) => {
+    const requestUrl = new URL(req.url);
+    requestUrl.protocol = backendUrl.protocol;
+    requestUrl.host = backendUrl.host;
 
-    return await proxy(reqUrl, ctx.req);
+    const { method, body, headers,} = req.raw;
+
+    return proxy(requestUrl, {
+        method, body, headers,
+        // @ts-expect-error
+        duplex: 'half',
+        signal: null
+    });
 })
 
 async function proxyRequest({ request }: { request: Request }): Promise<Response> {
