@@ -10,7 +10,6 @@ export default function UserAvatar({ user, className, imageProps, fallbackProps,
     fallbackProps?: ComponentProps<typeof Avatar.Fallback>
 } & ComponentProps<typeof Avatar.Root>) {
 
-    console.log(user);
     const letters = user.name
         .split(' ', 2)
         .map(x => x[0]?.toUpperCase())

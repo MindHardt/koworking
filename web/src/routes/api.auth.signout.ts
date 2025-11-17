@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/auth/signout')({
         handlers: {
             GET: async ({ request }) => {
                 const requestUrl = new URL(request.url);
-                const { returnUrl } = zSearch.parse({ ...requestUrl.searchParams });
+                const { returnUrl } = zSearch.parse(Object.fromEntries(requestUrl.searchParams.entries()));
 
                 const { refresh_token } = retrieveTokens();
                 if (refresh_token) {
