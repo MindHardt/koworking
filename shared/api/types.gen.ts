@@ -89,7 +89,7 @@ export type PaycheckType = 'Net' | 'Gross';
  * UpdateMeRequest
  */
 export type UpdateMeRequest = {
-    avatarUrl?: string;
+    avatarUrl?: string | null;
 };
 
 /**

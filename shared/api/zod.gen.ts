@@ -86,7 +86,10 @@ export const zCreateVacancyRequest = z.object({
  * UpdateMeRequest
  */
 export const zUpdateMeRequest = z.object({
-    avatarUrl: z.optional(z.string())
+    avatarUrl: z.optional(z.union([
+        z.string(),
+        z.null()
+    ]))
 });
 
 /**

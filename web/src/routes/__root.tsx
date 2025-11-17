@@ -54,14 +54,14 @@ function RootDocument({ children }: { children: ReactNode }) {
   <head>
     <HeadContent />
   </head>
-  <body className='w-full min-h-screen'>
+  <body className='w-full min-h-screen overflow-x-hidden overflow-y-scroll'>
   <Providers>
     <Header />
     <main className='p-5 mx-auto root'>
       {children}
     </main>
   </Providers>
-  {import.meta.dev && <TanStackDevtools
+  {import.meta.env.DEV && <TanStackDevtools
       config={{
         position: 'bottom-right',
       }}

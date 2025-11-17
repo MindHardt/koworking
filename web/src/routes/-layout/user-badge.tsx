@@ -19,7 +19,7 @@ export default function UserBadge({ user } : {
         <Menu.Trigger className='flex flex-row gap-1' render={<div></div>} nativeButton={false}>
             <UserAvatar
                 user={user}
-                className='size-12 hover:filter-[brightness(0.8)] transition-[filter]'
+                className='size-12 hover:filter-[brightness(0.8)] transition-[filter] rounded-4xl'
                 imageProps={{ className: 'size-12 rounded-4xl' }}
                 fallbackProps={{ className: 'block size-12 rounded-4xl bg-main-200 text-main-800 flex justify-center items-center text-xl font-bold' }} />
             <Button className='hidden md:flex h-12 w-32 bg-main-500 hover:bg-main-600 rounded-4xl items-center justify-center text-white text-lg font-semibold'>

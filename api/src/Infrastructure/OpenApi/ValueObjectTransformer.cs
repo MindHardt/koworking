@@ -40,7 +40,7 @@ public class ValueObjectTransformer : IOpenApiSchemaTransformer
         var voType = voAttribute.GetType().GetGenericArguments()[0];
         var defaultSchema = voType.MapTypeToOpenApiPrimitiveType();
         
-        (schema.Type, schema.Format) = (defaultSchema.Type, defaultSchema.Format);
+        defaultSchema.CopyTo(schema);
         
         return Task.CompletedTask;
     }
